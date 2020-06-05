@@ -7,13 +7,7 @@ const createToken = (user, expiresIn) => {
 };
 const userResolvers = {
   Query: {
-    user: async (parent, { id }, { models, loggedIn }) => {
-      if (!loggedIn) {
-        throw new AuthenticationError("You are not authenticated");
-      }
-      const user = await models.user.findById({ _id: id }).exec();
-      return user;
-    }
+    loggedUser: (parent, args, { loggedIn }) => loggedIn
   },
   Mutation: {
     register: async (parent, { name, email, password }, { models }) => {

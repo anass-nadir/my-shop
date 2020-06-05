@@ -1,8 +1,9 @@
 import React from 'react';
-
+import { withRouter } from 'react-router-dom';
 import FormInput from '../formInput/formInput';
 
 import './signIn.scss';
+
 
 class SignIn extends React.Component {
       constructor(props) {
@@ -16,9 +17,17 @@ class SignIn extends React.Component {
 
       handleSubmit = event => {
             event.preventDefault();
-
-            this.setState({ email: '', password: '' });
-      };
+            this.props.login({
+              variables: {
+                email: this.state.email,
+                password: this.state.password
+              }
+            }).then(async ({ data }) => {
+              localStorage.setItem('token', data.login.token);
+              await this.props.refetch();
+              this.props.history.push('/shop');
+            }).catch(error => console.error(error));
+          };
 
       handleChange = event => {
             const { value, name } = event.target;
@@ -56,4 +65,4 @@ class SignIn extends React.Component {
       }
 }
 
-export default SignIn;
+export default withRouter(SignIn);
