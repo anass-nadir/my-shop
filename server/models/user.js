@@ -3,16 +3,21 @@ const bcrypt = require("bcrypt");
 const Schema = mongoose.Schema;
 const SALT_WORK_FACTOR = 10;
 
-
 const User = new Schema(
   {
     name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true, min: 6 }
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      trim: true,
+      lowercase: true
+    },
+    password: { type: String, required: true }
   },
   { timestamps: { currentTime: () => Date.now() } }
 );
-User.pre("save", function(next) {
+User.pre("save", function (next) {
   if (!this.isModified("password")) return next();
   bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
     if (err) return next(err);
@@ -24,11 +29,5 @@ User.pre("save", function(next) {
     });
   });
 });
-User.methods.comparePassword = function(password, cb) {
-  bcrypt.compare(password, this.password, (err, isMatch) => {
-    if (err) return cb(err);
-    cb(null, isMatch);
-  });
-};
 User.indexes();
 module.exports = mongoose.model("users", User);
