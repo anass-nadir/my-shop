@@ -16,10 +16,12 @@ const userResolvers = {
       return await user
         .save()
         .then(() => {
-          if(user.id)
-            return true
-            else
-            return false
+          if (user.id) {
+            const token = createToken(user, 24 * 10 * 50);
+            return {
+              token,
+            };
+          } else throw new Error("could not create this user");
         })
         .catch((error) => {
           throw new Error(error.message);
