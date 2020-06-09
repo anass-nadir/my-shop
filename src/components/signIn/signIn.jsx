@@ -61,4 +61,4 @@ class SignIn extends React.Component {
       }
 }
 
-export default connect()(withRouter(SignIn));
+export default connect()(SignIn);

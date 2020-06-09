@@ -5,10 +5,10 @@ import SignIn from '../../components/signIn/signIn';
 import SignUp from '../../components/signUp/signUp';
 import './signInAndSignUp.scss';
 
-const SignInAndSignUp = ({ history }) => (
+const SignInAndSignUp = () => (
     <div className='sign-in-and-sign-up'>
-            <SignIn history={history} />
-            <SignUp history={history} />
+            <SignIn />
+            <SignUp />
     </div>
 );
 
