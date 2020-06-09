@@ -1,9 +1,17 @@
 import React from 'react';
 import { Link, withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
+import { createStructuredSelector } from 'reselect';
+
+import { selectCartHidden } from '../../redux/cart/selectors';
+import { selectCurrentUser } from '../../redux/user/selectors';
 import LogoutButton from '../logout/logout';
+import CartIcon from '../cartIcon/cartIcon';
+import CartDropdown from '../cartDropdown/cartDropdown';
+
 
 import './header.scss';
-const LinksNoAuth = () => (
+const LinksNoAuth = ({hidden}) => (
   <div className='options'>
     <Link className='option' to='/'>
       INDEX
@@ -11,13 +19,15 @@ const LinksNoAuth = () => (
     <Link className='option' to='/shop'>
       SHOP
       </Link>
+      <CartIcon />
+      {hidden ? null : <CartDropdown />}
     <Link className='option' to='/signin'>
       LOGIN/REGISTER
       </Link>
   </div>
 );
 
-const LinksWithAuth = ({ loggedUser }) => (
+const LinksWithAuth = ({ loggedUser, hidden }) => (
   <div className='options'>
     welcome {loggedUser.name}
     <Link className='option' to='/'>
@@ -26,14 +36,21 @@ const LinksWithAuth = ({ loggedUser }) => (
     <Link className='option' to='/shop'>
       SHOP
       </Link>
+      <CartIcon />
+      {hidden ? null : <CartDropdown />}
     <LogoutButton />
   </div>
 );
 
-const Header = ({ session }) => (
+const Header = ({ currentUser, hidden }) => (
   <div className='header'>
-    {session && session.loggedUser ? <LinksWithAuth loggedUser={session.loggedUser} /> : <LinksNoAuth />}
+    {currentUser ? <LinksWithAuth hidden={hidden} loggedUser={currentUser} /> : <LinksNoAuth hidden={hidden} />}
   </div>
 );
 
-export default withRouter(Header);
+const mapStateToProps = createStructuredSelector({
+  hidden: selectCartHidden,
+  currentUser: selectCurrentUser,
+});
+
+export default connect(mapStateToProps)(withRouter(Header));

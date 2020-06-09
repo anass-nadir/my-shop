@@ -1,6 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import FormInput from '../formInput/formInput';
-
+import { registerUser } from '../../redux/user/actions';
 import './signUp.scss';
 
 class SignUp extends React.Component {
@@ -20,23 +21,13 @@ class SignUp extends React.Component {
   };
   handleSubmit = async event => {
     event.preventDefault();
-    const { name, email, password, confirmPassword } = this.state;
+    const { password, confirmPassword } = this.state;
 
     if (password !== confirmPassword) {
       alert("passwords don't match");
       return;
     }
-    this.props.register({
-      variables: {
-        name: name,
-        email: email,
-        password: password
-      }
-    }).then(async ({ data }) => {
-      localStorage.setItem('token', data.register.token);
-      await this.props.refetch();
-      this.props.history.push('/shop');
-    }).catch(error => console.error(error));
+    this.props.dispatch(registerUser(this.state))
 };
 
 handleChange = event => {
@@ -91,4 +82,4 @@ render() {
 }
 }
 
-export default SignUp;
+export default connect()(SignUp);

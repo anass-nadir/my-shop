@@ -1,23 +1,19 @@
-import React, { Component } from 'react';
-import { ApolloConsumer } from 'react-apollo';
+import React from 'react';
 import { withRouter } from 'react-router-dom';
+import { connect } from 'react-redux';
 
-class LogoutButton extends Component {
-  logout = async client => {
+import { logoutUser } from '../../redux/user/actions';
+
+
+const LogoutButton = props => {
+  const logout = async () => {
     localStorage.removeItem('token');
-    await client.resetStore();
-    this.props.history.push('/signin');
+    await props.dispatch(logoutUser())
+    props.history.push('/signin');
   }
-
-  render() {
-    return (
-      <ApolloConsumer>
-        {client => (
-          <button className="option" onClick={() => this.logout(client)}>LOGOUT</button>
-        )}
-      </ApolloConsumer>
-    );
-  }
+  return (
+    <button className="option" onClick={logout}>LOGOUT</button>
+  );
 }
 
-export default withRouter(LogoutButton);
+export default connect()(withRouter(LogoutButton));

@@ -29,5 +29,11 @@ User.pre("save", function (next) {
     });
   });
 });
+User.methods.comparePassword = function(password, cb) {
+  bcrypt.compare(password, this.password, (err, isMatch) => {
+    if (err) return cb(err);
+    cb(null, isMatch);
+  });
+};
 User.indexes();
 module.exports = mongoose.model("users", User);

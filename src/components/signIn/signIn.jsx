@@ -1,5 +1,7 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { loginUser } from '../../redux/user/actions';
 import FormInput from '../formInput/formInput';
 
 import './signIn.scss';
@@ -17,16 +19,10 @@ class SignIn extends React.Component {
 
       handleSubmit = event => {
             event.preventDefault();
-            this.props.login({
-                  variables: {
-                        email: this.state.email,
-                        password: this.state.password
-                  }
-            }).then(async ({ data }) => {
-                  localStorage.setItem('token', data.login.token);
-                  await this.props.refetch();
-                  this.props.history.push('/shop');
-            }).catch(error => console.error(error));
+            this.props.dispatch(loginUser({
+                  email: this.state.email,
+                  password: this.state.password
+            }));
       };
 
       handleChange = event => {
@@ -65,4 +61,4 @@ class SignIn extends React.Component {
       }
 }
 
-export default withRouter(SignIn);
+export default connect()(withRouter(SignIn));
