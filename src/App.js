@@ -1,17 +1,20 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, lazy, Suspense } from 'react';
 import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import './App.css';
 
-import HomePage from './pages/index';
-import ShopPage from './pages/shop/shop';
-import SignInAndSignUpPage from './pages/signInAndSignUp/signInAndSignUp';
 import Header from './components/header/header';
-import CheckoutPage from './pages/checkout/checkout';
+import Spinner from './components/spinner/spinner';
 import { checkUserToken } from './redux/user/actions';
 import { selectCurrentUser } from './redux/user/selectors';
+const HomePage = lazy(() => import('./pages/index'));
+const ShopPage = lazy(() => import('./pages/shop/shop'));
+const SignInAndSignUpPage = lazy(() =>
+  import('./pages/signInAndSignUp/signInAndSignUp')
+);
+const CheckoutPage = lazy(() => import('./pages/checkout/checkout'));
 
 const App = ({ checkToken, currentUser }) => {
   useEffect(() => {
@@ -22,15 +25,17 @@ const App = ({ checkToken, currentUser }) => {
       <BrowserRouter>
         <Header />
         <Switch>
-          <Route exact path='/' component={HomePage} />
-          <Route path='/shop' component={ShopPage} />
-          <Route path='/checkout' component={CheckoutPage} />
-          <Route
-            path='/signin'
-            component={() =>
-              currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
-            }
-          />
+          <Suspense fallback={<Spinner />}>
+            <Route exact path='/' component={HomePage} />
+            <Route path='/shop' component={ShopPage} />
+            <Route path='/checkout' component={CheckoutPage} />
+            <Route
+              path='/signin'
+              component={() =>
+                currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
+              }
+            />
+          </Suspense>
         </Switch>
       </BrowserRouter>
     </div>

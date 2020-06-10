@@ -1,28 +1,37 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, Suspense, lazy } from 'react'
+import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 import { fetchProducts } from '../../redux/product/actions';
-import { selectAllProducts, selectIsProductsFetching } from '../../redux/product/selectors';
 import Spinner from '../../components/spinner/spinner'
-import CollectionPreview from '../../components/collectionPreview/collectionPreview';
 
-const Shop = ({ getProducts, products, isFetching }) => {
+const CollectionsOverviewContainer = lazy(() =>
+      import('../../components/collectionsOverview/collectionsOverviewContainer')
+);
+
+const CollectionPageContainer = lazy(() =>
+      import('../collection/collectionContainer')
+);
+const Shop = ({ getProducts, match }) => {
       useEffect(() => {
             getProducts();
       }, [getProducts]);
       return (
             <div className='shop-page'>
-                  {isFetching ? <Spinner/> : products.map(({ _id, ...otherCollectionProps }) => (
-                        <CollectionPreview key={_id} {...otherCollectionProps} />
-                  ))}
+                  <Suspense fallback={<Spinner />}>
+                        <Route
+                              exact
+                              path={`${match.path}`}
+                              component={CollectionsOverviewContainer}
+                        />
+                        <Route
+                              path={`${match.path}/:collectionId`}
+                              component={CollectionPageContainer}
+                        />
+                  </Suspense>
             </div>
       )
 }
-const mapStateToProps = createStructuredSelector({
-      products: selectAllProducts,
-      isFetching: selectIsProductsFetching
-});
 const mapDispatchToProps = dispatch => ({
       getProducts: () => dispatch(fetchProducts())
 });
-export default connect(mapStateToProps, mapDispatchToProps)(Shop)
+export default connect(null, mapDispatchToProps)(Shop)

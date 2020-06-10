@@ -15,6 +15,20 @@ const getProducts = async (req, res) => {
       return res.status(200).json({ success: true, data: { products } });
     });
 };
+const getCategories = async (req, res) => {
+  await ProductCategory.find(null, 'title imageUrl').exec((err, categories) => {
+    if (err) {
+      return res.status(400).json({ success: false, error: err });
+    }
+    if (!categories) {
+      return res
+        .status(400)
+        .json({ success: false, error: "there's no categories" });
+    }
+    return res.status(200).json({ success: true, data: { categories } });
+  });
+};
 module.exports = {
-  getProducts
+  getProducts,
+  getCategories
 };

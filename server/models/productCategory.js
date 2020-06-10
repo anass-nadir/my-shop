@@ -7,6 +7,10 @@ const productCategory = new Schema({
     unique: true,
     trim: true
   },
+  imageUrl: {
+    type: String,
+    required: true
+  },
   products: [{ type: mongoose.Schema.ObjectId, ref: 'product' }]
 });
 

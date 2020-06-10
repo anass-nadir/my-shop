@@ -1,7 +1,7 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 
 import { productActionTypes } from '../product/types';
-import { getProductsService } from './services'
+import { getProductsService, getCategoriesService } from './services'
 
 function* fetchAllProducts() {
   try {
@@ -15,6 +15,18 @@ function* fetchAllProducts() {
   }
 }
 
+function* fetchAllCategories() {
+  try {
+    const response = yield call(getCategoriesService);
+    if(response.success)
+    yield put({ type: productActionTypes.FETCH_CATEGORIES_SUCCESS, response });
+    else
+    yield put({ type: productActionTypes.FETCH_CATEGORIES_ERROR });
+  } catch (error) {
+    yield put({ type: productActionTypes.FETCH_CATEGORIES_ERROR });
+  }
+}
 export function* productSagas() {
   yield takeLatest(productActionTypes.FETCH_PRODUCTS, fetchAllProducts);
+  yield takeLatest(productActionTypes.FETCH_CATEGORIES, fetchAllCategories);
 }

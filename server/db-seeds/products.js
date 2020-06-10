@@ -4,6 +4,7 @@ const ProductCategory = require('../models/productCategory');
 const data = [
   {
     title: 'Hats',
+    imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
     items: [
       {
         name: 'Brown Brim',
@@ -54,6 +55,7 @@ const data = [
   },
   {
     title: 'Sneakers',
+    imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
     items: [
       {
         name: 'Adidas NMD',
@@ -99,6 +101,7 @@ const data = [
   },
   {
     title: 'Jackets',
+    imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
     items: [
       {
         name: 'Black Jean Shearling',
@@ -129,6 +132,7 @@ const data = [
   },
   {
     title: 'Womens',
+    imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
     items: [
       {
         name: 'Blue Tanktop',
@@ -169,6 +173,7 @@ const data = [
   },
   {
     title: 'Mens',
+    imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
     items: [
       {
         name: 'Camo Down Vest',
@@ -207,7 +212,7 @@ const data = [
 const productsSeeder = async (req, res) => {
   await data.forEach((item) => {
     try {
-      const category = new ProductCategory({ title: item.title });
+      const category = new ProductCategory({ title: item.title, imageUrl: item.imageUrl });
       if (category)
         category
           .save()

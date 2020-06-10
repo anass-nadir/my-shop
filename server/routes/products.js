@@ -4,4 +4,5 @@ const productCtrl = require('../controllers/products');
 
 router.get('/seed', productsSeeder);
 router.get('/', productCtrl.getProducts);
+router.get('/categories', productCtrl.getCategories);
 module.exports = router;

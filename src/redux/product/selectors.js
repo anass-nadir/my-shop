@@ -7,7 +7,19 @@ export const selectAllProducts = createSelector(
   product => product.products
 );
 
-export const selectIsProductsFetching = createSelector(
+export const selectIsFetching = createSelector(
   [selectProducts],
   product => product.isFetching
 );
+
+export const selectAllCategories = createSelector(
+  [selectProducts],
+  product => product.categories
+);
+
+
+export const selectCollection = collectionId =>
+  createSelector(
+    [selectAllProducts],
+    product => product.filter(pr => pr._id === collectionId)[0] || []
+  );

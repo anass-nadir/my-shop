@@ -3,12 +3,14 @@ import { productActionTypes } from './types';
 const INITIAL_STATE = {
   isFetching: false,
   success: false,
-  products: []
+  products: [],
+  categories: []
 };
 
 const productReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case productActionTypes.FETCH_PRODUCTS:
+    case productActionTypes.FETCH_CATEGORIES:
       return {
         ...state,
         isFetching: true
@@ -20,6 +22,14 @@ const productReducer = (state = INITIAL_STATE, action) => {
         success: action.response.success,
         products: action.response.data.products || null
       };
+    case productActionTypes.FETCH_CATEGORIES_SUCCESS:
+      return {
+        ...state,
+        isFetching: false,
+        success: action.response.success,
+        categories: action.response.data.categories || null
+      };
+    case productActionTypes.FETCH_CATEGORIES_ERROR:
     case productActionTypes.FETCH_PRODUCTS_ERROR:
       return {
         ...state,

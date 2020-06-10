@@ -1,60 +1,30 @@
-import React from 'react';
-
-import MenuItem from '../menu-item/menuItem';
+import React, { useEffect } from 'react';
+import { createStructuredSelector } from 'reselect';
+import { connect } from 'react-redux';
+import MenuItem from '../menuItem/menuItem';
+import { fetchCategories } from '../../redux/product/actions'
+import { selectAllCategories, selectIsFetching } from '../../redux/product/selectors'
 
 import './directory.scss';
 
-class Directory extends React.Component {
-  constructor() {
-    super();
-
-    this.state = {
-      sections: [
-        {
-          title: 'hats',
-          imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
-          id: 1,
-          linkUrl: 'hats'
-        },
-        {
-          title: 'jackets',
-          imageUrl: 'https://i.ibb.co/px2tCc3/jackets.png',
-          id: 2,
-          linkUrl: 'jackets'
-        },
-        {
-          title: 'sneakers',
-          imageUrl: 'https://i.ibb.co/0jqHpnp/sneakers.png',
-          id: 3,
-          linkUrl: 'sneakers'
-        },
-        {
-          title: 'womens',
-          imageUrl: 'https://i.ibb.co/GCCdy8t/womens.png',
-          size: 'large',
-          id: 4,
-          linkUrl: 'womens'
-        },
-        {
-          title: 'mens',
-          imageUrl: 'https://i.ibb.co/R70vBrQ/men.png',
-          size: 'large',
-          id: 5,
-          linkUrl: 'men'
-        }
-      ]
-    };
-  }
-
-  render() {
-    return (
-      <div className='directory-menu'>
-        {this.state.sections.map(({ id, ...otherSectionProps }) => (
-          <MenuItem key={id} {...otherSectionProps} />
-        ))}
-      </div>
-    );
-  }
+const Directory = ({ getCategories, categories }) => {
+  useEffect(() => {
+    getCategories();
+  }, [getCategories]);
+  return (
+    <div className='directory-menu'>
+      {categories.map(item => (
+        <MenuItem key={item._id} item={item} />
+      ))}
+    </div>
+  );
 }
+const mapStateToProps = createStructuredSelector({
+  categories: selectAllCategories,
+  isFetching: selectIsFetching
+});
+const mapDispatchToProps = dispatch => ({
+  getCategories: () => dispatch(fetchCategories())
+});
 
-export default Directory;
+export default connect(mapStateToProps, mapDispatchToProps)(Directory)
