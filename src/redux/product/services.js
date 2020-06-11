@@ -1,13 +1,7 @@
-import axios from 'axios';
+import axios from '../utils/axios';
 export const getProductsService = () => {
-  const FETCH_PRODUCTS_ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/products`;
-
   return axios
-    .get(FETCH_PRODUCTS_ENDPOINT, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    .get(`/products`)
     .then(({ data }) => {
       return data;
     })
@@ -17,14 +11,8 @@ export const getProductsService = () => {
 };
 
 export const getCategoriesService = () => {
-  const FETCH_CATEGORIES_ENDPOINT = `${process.env.REACT_APP_SERVER_URL}/products/categories`;
-
   return axios
-    .get(FETCH_CATEGORIES_ENDPOINT, {
-      headers: {
-        'Content-Type': 'application/json'
-      }
-    })
+    .get(`/products/categories`)
     .then(({ data }) => {
       return data;
     })
