@@ -19,8 +19,9 @@ export const checkUserToken = () => {
     type: userActionTypes.CHECK_TOKEN
   };
 };
-export const logoutUser = () => {
+export const logoutUser = (cb) => {
   return {
-    type: userActionTypes.LOGOUT_USER
+    type: userActionTypes.LOGOUT_USER,
+    payload: cb
   };
 };

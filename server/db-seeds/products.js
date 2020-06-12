@@ -209,8 +209,8 @@ const data = [
   }
 ];
 
-const productsSeeder = async (req, res) => {
-  await data.forEach((item) => {
+const productsSeeder = (req, res) => {
+   data.forEach((item) => {
     try {
       const category = new ProductCategory({ title: item.title, imageUrl: item.imageUrl });
       if (category)

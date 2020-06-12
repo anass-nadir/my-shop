@@ -12,7 +12,7 @@ export const getCartItemsService = () => {
 
 export const pushCartService = items => {
   return axios
-    .put(`/cart/refresh`, { privateRoute: true }, { items: items })
+    .put(`/cart/refresh`,{ items: JSON.stringify(items) }, { privateRoute: true })
     .then(({ data }) => {
       return data;
     })
