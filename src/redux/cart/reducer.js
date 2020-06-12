@@ -1,5 +1,5 @@
 import { cartActionTypes } from './types';
-import { addItemToCart, removeItemFromCart } from './utils';
+import { addItemToCart, removeItemFromCart, syncCartItems } from './utils';
 
 const INITIAL_STATE = {
   hidden: true,
@@ -34,6 +34,11 @@ const cartReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         cartItems: []
+      };
+    case cartActionTypes.FETCH_CART_SUCCESS:
+      return {
+        ...state,
+        cartItems: syncCartItems(state.cartItems, action.response)
       };
     default:
       return state;

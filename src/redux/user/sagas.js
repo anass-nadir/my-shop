@@ -5,8 +5,8 @@ import {
   checkUserTokenService
 } from './services';
 
-import { userActionTypes } from '../user/types';
-
+import { userActionTypes } from './types';
+import { cartActionTypes } from '../cart/types';
 function* registerSaga(payload) {
   try {
     const response = yield call(registerService, payload);
@@ -22,10 +22,10 @@ function* registerSaga(payload) {
 function* loginSaga(payload) {
   try {
     const response = yield call(loginService, payload);
-    if(response.success)
-    yield put({ type: userActionTypes.LOGIN_USER_SUCCESS, response });
-    else
-    yield put({ type: userActionTypes.LOGIN_USER_ERROR, response });
+    if(response.success) {
+      yield put({ type: userActionTypes.LOGIN_USER_SUCCESS, response });
+      yield put({ type: cartActionTypes.FETCH_CART });
+    } else yield put({ type: userActionTypes.LOGIN_USER_ERROR, response });
   } catch (error) {
     yield put({ type: userActionTypes.LOGIN_USER_ERROR, response:{success: false, error: error.message} });
   }

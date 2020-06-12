@@ -1,6 +1,6 @@
 import { takeLatest, put, call } from 'redux-saga/effects';
 
-import { productActionTypes } from '../product/types';
+import { productActionTypes } from './types';
 import { getProductsService, getCategoriesService } from './services'
 
 function* fetchAllProducts() {
