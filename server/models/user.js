@@ -14,7 +14,7 @@ const User = new Schema(
       trim: true,
       lowercase: true
     },
-    password: { type: String, required: () => !this.googleId }
+    password: { type: String, required: () => this.googleId === null }
   },
   { timestamps: { currentTime: () => Date.now() } }
 );
