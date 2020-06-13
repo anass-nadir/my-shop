@@ -30,17 +30,19 @@ export const removeItemFromCart = (cartItems, cartItemToRemove) => {
   );
 };
 export const syncCartItems = (cartItems, cartItemsToAdd) => {
-  cartItemsToAdd.forEach(item => {
-    const existingCartItem = cartItems.find(
-      cartItem => cartItem._id === item._id
-    );
-    if (existingCartItem) {
-      existingCartItem.quantity += item.quantity
-    } else {
-      cartItems = [...cartItems, {
-        ...item
-      }];
-    }
-  });
+  if (JSON.stringify(cartItems) !== JSON.stringify(cartItemsToAdd)) {
+    cartItemsToAdd.forEach(item => {
+      const existingCartItem = cartItems.find(
+        cartItem => cartItem._id === item._id
+      );
+      if (existingCartItem) {
+        existingCartItem.quantity += item.quantity
+      } else {
+        cartItems = [...cartItems, {
+          ...item
+        }];
+      }
+    });
+  }
   return cartItems
 };

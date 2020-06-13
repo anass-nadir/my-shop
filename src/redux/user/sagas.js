@@ -34,10 +34,13 @@ function* loginSaga(payload) {
 function* checkUserTokenSaga() {
   try {
     const response = yield call(checkUserTokenService);
-    if(response&&response.success)
-    yield put({ type: userActionTypes.LOGIN_USER_SUCCESS, response });
-    else
-    yield put({ type: userActionTypes.LOGIN_USER_ERROR, response:{success: false} });
+    if(response.success){
+      yield put({ type: userActionTypes.LOGIN_USER_SUCCESS, response });
+      yield put({ type: cartActionTypes.FETCH_CART });
+    }else {
+      yield put({ type: userActionTypes.LOGIN_USER_ERROR, response:{success: false} });
+      yield response !== 'no token' && put({ type: cartActionTypes.CLEAR_CART });
+    }
   } catch (error) {
     yield put({ type: userActionTypes.LOGIN_USER_ERROR,response:{success: false, error: error.message} });
   }

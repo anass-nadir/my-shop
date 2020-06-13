@@ -5,6 +5,7 @@ const SALT_WORK_FACTOR = 10;
 
 const User = new Schema(
   {
+    googleId: { type: String },
     name: { type: String, required: true },
     email: {
       type: String,
@@ -13,12 +14,12 @@ const User = new Schema(
       trim: true,
       lowercase: true
     },
-    password: { type: String, required: true }
+    password: { type: String, required: () => !this.googleId }
   },
   { timestamps: { currentTime: () => Date.now() } }
 );
 User.pre("save", function (next) {
-  if (!this.isModified("password")) return next();
+  if (!this.isModified("password") || this.googleId) return next();
   bcrypt.genSalt(SALT_WORK_FACTOR, (err, salt) => {
     if (err) return next(err);
 

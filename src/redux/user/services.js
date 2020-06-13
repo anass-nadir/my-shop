@@ -35,4 +35,5 @@ export const checkUserTokenService = () => {
         return response.data;
       });
   }
+  return 'no token';
 };

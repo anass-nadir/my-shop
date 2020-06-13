@@ -1,7 +1,7 @@
 const jwt = require('jsonwebtoken');
 const User = require('../models/user');
 const { createToken } = require('../utils');
-
+require("../utils/passport");
 const login = async (req, res) => {
   await User.findOne({ email: req.body.email }, (err, user) => {
     if (err) {

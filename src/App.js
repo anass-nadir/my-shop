@@ -1,5 +1,5 @@
 import React, { useEffect, lazy, Suspense } from 'react';
-import { Switch, Route, BrowserRouter, Redirect } from 'react-router-dom';
+import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
@@ -15,29 +15,31 @@ const SignInAndSignUpPage = lazy(() =>
   import('./pages/signInAndSignUp/signInAndSignUp')
 );
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout'));
-
+const useQuery = () => {
+  return new URLSearchParams(useLocation().search);
+};
 const App = ({ checkToken, currentUser }) => {
+  let authToken = useQuery().get('auth-token');
   useEffect(() => {
+    authToken && localStorage.setItem('token', authToken);
     checkToken();
-  }, [checkToken]);
+  }, [checkToken, authToken]);
   return (
     <div>
-      <BrowserRouter>
-        <Header />
-        <Switch>
-          <Suspense fallback={<Spinner />}>
-            <Route exact path='/' component={HomePage} />
-            <Route path='/shop' component={ShopPage} />
-            <Route path='/checkout' component={CheckoutPage} />
-            <Route
-              path='/signin'
-              component={() =>
-                currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
-              }
-            />
-          </Suspense>
-        </Switch>
-      </BrowserRouter>
+      <Header />
+      <Switch>
+        <Suspense fallback={<Spinner />}>
+          <Route exact path='/' component={HomePage} />
+          <Route path='/shop' component={ShopPage} />
+          <Route path='/checkout' component={CheckoutPage} />
+          <Route
+            path='/signin'
+            component={() =>
+              currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
+            }
+          />
+        </Suspense>
+      </Switch>
     </div>
   );
 };
