@@ -1,4 +1,4 @@
-import axios from '../utils/axios';
+import axios from '../../utils/axios';
 export const registerService = request => {
   return axios
     .post(`/users/create`, request.payload)

@@ -3,13 +3,15 @@ import { connect } from 'react-redux';
 import { createStructuredSelector } from 'reselect';
 
 import CheckoutItem from '../../components/checkoutItem/checkoutItem';
+import { Elements } from '@stripe/react-stripe-js';
+import { loadStripe } from '@stripe/stripe-js';
+import CheckoutForm from '../../components/checkoutForm/checkoutForm';
 
-import {
-  selectCartItems,
-  selectCartTotal
-} from '../../redux/cart/selectors';
+import { selectCartItems, selectCartTotal } from '../../redux/cart/selectors';
 
 import './checkout.scss';
+
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
 
 const CheckoutPage = ({ cartItems, total }) => (
   <div className='checkout-page'>
@@ -34,6 +36,14 @@ const CheckoutPage = ({ cartItems, total }) => (
       <CheckoutItem key={cartItem._id} cartItem={cartItem} />
     ))}
     <div className='total'>TOTAL: ${total}</div>
+    <div className='warning'>
+      *Please use the following test credit card for payments*
+      <br />
+      4242 4242 4242 4242
+    </div>
+    <Elements stripe={stripePromise}>
+      <CheckoutForm price={total} />
+    </Elements>
   </div>
 );
 

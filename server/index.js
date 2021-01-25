@@ -1,13 +1,12 @@
 const express = require("express");
 const cors = require("cors");
-const bodyParser = require('body-parser')
 const db = require("./db");
 const app = express();
 const passport = require('passport');
 const Routes = require('./routes')
 
-app.use(bodyParser.urlencoded({ extended: true }))
-app.use(bodyParser.json())
+app.use(express.urlencoded({ extended: true }))
+app.use(express.json())
 
 
 app.use(
@@ -22,7 +21,6 @@ db.on(
   console.error.bind(console, "MongoDB connection error:")
 ).on("open", () => console.info("MongoDB connected"));
 
-app.use(express.json());
 app.use(passport.initialize());
 app.use('/api', Routes)
 app.get('/auth/google/callback/', passport.authenticate('google', {

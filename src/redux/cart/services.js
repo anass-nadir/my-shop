@@ -1,4 +1,4 @@
-import axios from '../utils/axios';
+import axios from '../../utils/axios';
 export const getCartItemsService = () => {
   return axios
     .get(`/cart`, { privateRoute: true })
