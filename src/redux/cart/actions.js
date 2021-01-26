@@ -26,3 +26,8 @@ export const clearCart = () => ({
 export const fetchCart = () => ({
   type: cartActionTypes.FETCH_CART
 });
+
+export const makePayment = payload => ({
+  type: cartActionTypes.MAKE_PAYMENT,
+  payload
+});

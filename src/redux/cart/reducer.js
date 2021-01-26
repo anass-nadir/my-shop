@@ -31,6 +31,7 @@ const cartReducer = (state = INITIAL_STATE, action) => {
         )
       };
     case cartActionTypes.CLEAR_CART:
+    case cartActionTypes.MAKE_PAYMENT_SUCCESS:
       return {
         ...state,
         cartItems: []
@@ -38,7 +39,9 @@ const cartReducer = (state = INITIAL_STATE, action) => {
     case cartActionTypes.FETCH_CART_SUCCESS:
       return {
         ...state,
-        cartItems: JSON.parse(JSON.stringify(syncCartItems(state.cartItems, action.response)))
+        cartItems: JSON.parse(
+          JSON.stringify(syncCartItems(state.cartItems, action.response))
+        )
       };
     case cartActionTypes.PUSH_TO_CART_ERROR:
     case cartActionTypes.FETCH_CART_ERROR:

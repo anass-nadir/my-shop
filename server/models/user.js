@@ -7,6 +7,7 @@ const User = new Schema(
   {
     googleId: { type: String },
     name: { type: String, required: true },
+    customerId: { type: String },
     email: {
       type: String,
       required: true,

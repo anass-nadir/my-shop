@@ -1,11 +1,11 @@
 import { connect } from 'react-redux';
 import { ElementsConsumer, CardElement } from '@stripe/react-stripe-js';
-import axios from '../../utils/axios';
 
+import { makePayment } from '../../redux/cart/actions';
 import { CheckoutCard } from './checkoutCard';
 import './checkoutForm.scss';
 
-const CheckoutForm = ({ price, email, stripe, elements }) => {
+const CheckoutForm = ({ price, stripe, elements, pay }) => {
   const handleSubmit = async () => {
     if (!stripe || !elements) {
       return;
@@ -17,24 +17,12 @@ const CheckoutForm = ({ price, email, stripe, elements }) => {
     if (result.error) {
       return;
     }
-    axios
-      .post(
-        '/cart/payment',
-        {
-          amount: price * 100,
-          email,
-          token: result.token
-        },
-        {
-          privateRoute: true
-        }
-      )
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log('Payment Error: ', error);
-      });
+    const paymentData = {
+      amount: price,
+      token: result.token
+    };
+
+    pay(paymentData);
   };
 
   return (
@@ -47,12 +35,11 @@ const CheckoutForm = ({ price, email, stripe, elements }) => {
   );
 };
 
-const mapStateToProps = (state) => {
-  const { currentUser } = state.user;
-  return { email: currentUser?.email };
-};
+const mapDispatchToProps = (dispatch) => ({
+  pay: (data) => dispatch(makePayment(data))
+});
 
-const InjectedCheckoutForm = ({ price, email }) => {
+const InjectedCheckoutForm = ({ price, pay }) => {
   return (
     <ElementsConsumer>
       {({ stripe, elements }) => (
@@ -60,11 +47,11 @@ const InjectedCheckoutForm = ({ price, email }) => {
           stripe={stripe}
           elements={elements}
           price={price}
-          email={email}
+          pay={pay}
         />
       )}
     </ElementsConsumer>
   );
 };
 
-export default connect(mapStateToProps)(InjectedCheckoutForm);
+export default connect(null, mapDispatchToProps)(InjectedCheckoutForm);

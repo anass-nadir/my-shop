@@ -1,7 +1,4 @@
-const Product = require('../models/product');
-const ProductCategory = require('../models/productCategory');
-
-const data = [
+module.exports = [
   {
     title: 'Hats',
     imageUrl: 'https://i.ibb.co/cvpntL1/hats.png',
@@ -208,47 +205,3 @@ const data = [
     ]
   }
 ];
-
-const productsSeeder = (req, res) => {
-   data.forEach((item) => {
-    try {
-      const category = new ProductCategory({ title: item.title, imageUrl: item.imageUrl });
-      if (category)
-        category
-          .save()
-          .then(() => {
-            console.log(`category ${item.title} added successfully`);
-            item.items.forEach((product) => {
-              const newProduct = new Product({
-                name: product.name,
-                price: product.price,
-                imageURL: product.imageUrl,
-                categoryId: category._id
-              });
-              newProduct
-                .save()
-                .then(async () => {
-                  await category
-                    .update({ $push: { products: newProduct._id } })
-                    .then(() =>
-                      console.log(`product ${product.name} added successfully`)
-                    );
-                })
-                .catch((error) => {
-                  console.log(`couldn't add product ${product.name}`);
-                });
-            });
-          })
-          .catch((error) => {
-            console.log(`couldn't add category ${item.title}`);
-          });
-    } catch (error) {
-      return res.status(400).json({ success: false });
-    }
-  });
-  return res.status(201).json({
-    success: true,
-    message: 'Products added successfully!'
-  });
-};
-module.exports = productsSeeder;

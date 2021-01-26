@@ -31,3 +31,16 @@ passport.use(
     }
   )
 );
+module.exports = (app) => {
+  app.use(passport.initialize());
+  app.get(
+    '/auth/google/callback/',
+    passport.authenticate('google', {
+      session: false
+    }),
+    (req, res) => {
+      const { token } = req.user;
+      res.redirect(`${process.env.PUBLIC_URL}/signin?auth-token=${token}`);
+    }
+  );
+};

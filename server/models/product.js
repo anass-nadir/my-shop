@@ -13,11 +13,6 @@ const Product = new Schema({
   imageURL: {
     type: String,
     required: true
-  },
-  categoryId: {
-    type: Schema.Types.ObjectId,
-    required: true,
-    ref: 'productCategory'
   }
 });
 

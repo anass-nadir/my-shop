@@ -1,11 +1,16 @@
 const jwt = require('jsonwebtoken');
+const { validationResult } = require('express-validator');
 const User = require('../models/user');
 const { createToken } = require('../utils');
-require("../utils/passport");
-const login = async (req, res) => {
-  await User.findOne({ email: req.body.email }, (err, user) => {
+
+const login = (req, res) => {
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success: false, errors: errors.array() });
+  }
+  User.findOne({ email: req.body.email }, (err, user) => {
     if (err) {
-      return res.status(400).json({ success: false, error: err });
+      return res.status(400).json({ success: false, error: err.message });
     }
 
     if (!user) {
@@ -28,13 +33,11 @@ const login = async (req, res) => {
   });
 };
 const createUser = (req, res) => {
-  const body = req.body;
-
-  if (!body) {
-    return res.status(400).json({
-      success: false
-    });
+  const errors = validationResult(req);
+  if (!errors.isEmpty()) {
+    return res.status(400).json({ success: false, errors: errors.array() });
   }
+  const body = req.body;
 
   const user = new User(body);
 
@@ -65,7 +68,10 @@ const checkToken = (req, res) => {
 
   jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
     if (err) return res.sendStatus(403);
-    return res.status(200).json({ success: true, data: { user: user.user } });
+    User.findById(user._id, (error, user) => {
+      if (error) return res.sendStatus(403);
+      return res.status(200).json({ success: true, data: { user } });
+    });
   });
 };
 module.exports = {

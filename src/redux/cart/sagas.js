@@ -3,9 +3,14 @@ import { takeLatest, put, call, select } from 'redux-saga/effects';
 import { userActionTypes } from '../user/types';
 
 import { cartActionTypes } from './types';
-import { getCartItemsService, pushCartService } from './services';
+import {
+  getCartItemsService,
+  pushCartService,
+  stripePaymentService
+} from './services';
 
 const getCart = (state) => state.cart;
+const getCurrentUser = (state) => state.user?.currentUser;
 
 function* fetchCart() {
   const response = yield call(getCartItemsService);
@@ -37,8 +42,31 @@ function* pushToCartOnLogout({ payload }) {
     yield put({ type: cartActionTypes.PUSH_TO_CART_ERROR });
   }
 }
+function* makePayment({ payload }) {
+  const currentUser = yield select(getCurrentUser);
+  const cart = yield select(getCart);
+  try {
+    const response = yield call(stripePaymentService, {
+      ...payload,
+      customer: {
+        name: currentUser.name,
+        email: currentUser.email,
+        customerId: currentUser?.customerId
+      },
+      cartItems: cart.cartItems
+    });
+    if (response.success)
+      yield put({ type: cartActionTypes.MAKE_PAYMENT_SUCCESS });
+    else yield put({ type: cartActionTypes.MAKE_PAYMENT_ERROR });
+  } catch (error) {
+    yield put({
+      type: cartActionTypes.MAKE_PAYMENT_ERROR
+    });
+  }
+}
 export function* cartSagas() {
   yield takeLatest(userActionTypes.LOGOUT_USER, pushToCartOnLogout);
   yield takeLatest(cartActionTypes.FETCH_CART, fetchCart);
   yield takeLatest(cartActionTypes.PUSH_TO_CART, pushToCart);
+  yield takeLatest(cartActionTypes.MAKE_PAYMENT, makePayment);
 }

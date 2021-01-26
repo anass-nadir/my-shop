@@ -12,13 +12,13 @@ const userReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         success: action.response.success,
-        currentUser: action.response.data.user || null
+        currentUser: action?.response.data.user
       };
     case userActionTypes.LOGIN_USER_ERROR:
     case userActionTypes.REGISTER_USER_ERROR:
       return {
         ...state,
-        response: action.response.error || null,
+        response: action?.response.error,
         success: action.response.success,
         currentUser: null
       };
