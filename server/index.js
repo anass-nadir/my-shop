@@ -3,7 +3,7 @@ const cors = require("cors");
 const app = express();
 const Routes = require('./routes')
 
-require("./db");
+require("./database");
 require('./utils/passport')(app)
 app.use(express.urlencoded({ extended: true }))
 app.use(express.json())

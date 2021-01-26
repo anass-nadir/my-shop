@@ -1,5 +1,5 @@
 const routes = require('express').Router();
-const { authenticateToken } = require('../utils');
+const { authenticateToken } = require('../middlewares');
 const users = require('./users');
 const products = require('./products');
 const carts = require('./carts');

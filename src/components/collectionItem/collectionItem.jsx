@@ -5,13 +5,13 @@ import { addItem } from '../../redux/cart/actions';
 import './collectionItem.scss';
 
 const CollectionItem = ({ item, dispatch }) => {
-  const { name, price, imageURL } = item;
+  const { name, price, imageUrl } = item;
   return (
     <div className='collection-item'>
       <div
         className='image'
         style={{
-          backgroundImage: `url(${imageURL})`
+          backgroundImage: `url(${imageUrl})`
         }}
       />
       <div className='collection-footer'>

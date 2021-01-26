@@ -1,78 +1,100 @@
 const jwt = require('jsonwebtoken');
 const { validationResult } = require('express-validator');
-const User = require('../models/user');
+const { User } = require('../models');
 const { createToken } = require('../utils');
 
 const login = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ success: false, errors: errors.array() });
-  }
-  User.findOne({ email: req.body.email }, (err, user) => {
-    if (err) {
-      return res.status(400).json({ success: false, error: err.message });
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
     }
+    User.findOne({ email: req.body.email }, (err, user) => {
+      if (err) {
+        return res.status(400).json({ success: false, error: err.message });
+      }
 
-    if (!user) {
-      return res.status(400).json({ success: false, error: 'User not found' });
-    }
-
-    return user.comparePassword(req.body.password, (err, isMatch) => {
-      if (err || !isMatch)
+      if (!user) {
         return res
           .status(400)
           .json({ success: false, error: 'User not found' });
-      const token = createToken(user, 24 * 10 * 60);
-      return res.status(200).json({ success: true, data: { user, token } });
+      }
+
+      return user.comparePassword(req.body.password, (err, isMatch) => {
+        if (err || !isMatch)
+          return res
+            .status(400)
+            .json({ success: false, error: 'User not found' });
+        const token = createToken(user, 24 * 10 * 60);
+        return res.status(200).json({
+          success: true,
+          data: { user: Object.assign(user, { password: undefined }), token }
+        });
+      });
     });
-  }).catch((error) => {
+  } catch (error) {
     return res.status(400).json({
       success: false,
-      error
+      error: error.message
     });
-  });
+  }
 };
 const createUser = (req, res) => {
-  const errors = validationResult(req);
-  if (!errors.isEmpty()) {
-    return res.status(400).json({ success: false, errors: errors.array() });
-  }
-  const body = req.body;
+  try {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+    const body = req.body;
 
-  const user = new User(body);
+    const user = new User(body);
 
-  if (!user) {
-    return res.status(400).json({ success: false });
-  }
+    if (!user) {
+      return res.status(400).json({ success: false });
+    }
 
-  user
-    .save()
-    .then(() => {
-      const token = createToken(user, 24 * 10 * 60);
-      return res.status(201).json({
-        success: true,
-        data: { user, token },
-        message: 'User created!'
+    user
+      .save()
+      .then(() => {
+        const token = createToken(user, 24 * 10 * 60);
+        return res.status(201).json({
+          success: true,
+          data: { user: Object.assign(user, { password: undefined }), token },
+          message: 'User created!'
+        });
+      })
+      .catch((error) => {
+        return res.status(400).json({
+          success: false,
+          error: error.message
+        });
       });
-    })
-    .catch((error) => {
-      return res.status(400).json({
-        success: false,
-        error
-      });
+  } catch (error) {
+    return res.status(400).json({
+      success: false,
+      error: error.message
     });
+  }
 };
 const checkToken = (req, res) => {
-  const token = req.query.token;
-  if (token == null) return res.sendStatus(401);
+  try {
+    const token = req.query.token;
+    if (token == null) return res.sendStatus(401);
 
-  jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
-    if (err) return res.sendStatus(403);
-    User.findById(user._id, (error, user) => {
-      if (error) return res.sendStatus(403);
-      return res.status(200).json({ success: true, data: { user } });
+    jwt.verify(token, process.env.JWT_SECRET, (err, user) => {
+      if (err) return res.sendStatus(403);
+      User.findById(
+        user._id,
+        '_id name email customerId createdAt updatedAt',
+        (error, user) => {
+          if (error) return res.sendStatus(403);
+          return res.status(200).json({ success: true, data: { user } });
+        }
+      );
     });
-  });
+  } catch (error) {
+    return res.sendStatus(403);
+  }
 };
 module.exports = {
   login,

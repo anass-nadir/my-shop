@@ -31,7 +31,7 @@ const pay = async (req, res) => {
 };
 
 const createCustomer = ({ email, name }, token) => {
-  const User = require('../models/user');
+  const { User } = require('../models');
   return new Promise((resolve, reject) => {
     stripe.customers
       .create({

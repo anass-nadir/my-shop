@@ -35,7 +35,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "dev_server": "nodemon --watch server --exec 'node -r dotenv/config' server/index.js dotenv_config_path=.env.server"
+    "dev_server": "nodemon --watch server --exec 'node -r dotenv/config' server/index.js dotenv_config_path=.env.server",
+    "seed-data": "node -r dotenv/config server/database/runSeeds.js dotenv_config_path=.env.server"
   },
   "eslintConfig": {
     "extends": "react-app"
