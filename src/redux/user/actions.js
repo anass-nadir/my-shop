@@ -14,14 +14,13 @@ export const loginUser = (user) => {
   };
 };
 
-export const checkUserToken = () => {
-  return {
-    type: userActionTypes.CHECK_TOKEN
-  };
-};
 export const logoutUser = (cb) => {
   return {
     type: userActionTypes.LOGOUT_USER,
     payload: cb
   };
 };
+
+export const getProfile = () => ({
+  type: userActionTypes.GET_PROFILE
+});

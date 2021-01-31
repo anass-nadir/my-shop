@@ -1,37 +1,33 @@
-import React, { useEffect, Suspense, lazy } from 'react'
+import React, { useEffect, Suspense, lazy } from 'react';
 import { Route } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { fetchProducts } from '../../redux/product/actions';
-import Spinner from '../../components/spinner/spinner'
+import Spinner from '../../components/spinner/spinner';
 
-const CollectionsOverviewContainer = lazy(() =>
-      import('../../components/collectionsOverview/collectionsOverviewContainer')
+const CollectionsOverview = lazy(() =>
+  import('../../components/collectionsOverview/collectionsOverview')
 );
 
-const CollectionPageContainer = lazy(() =>
-      import('../collection/collectionContainer')
+const CollectionPage = lazy(() =>
+  import('../../components/collection/collection')
 );
 const Shop = ({ getProducts, match }) => {
-      useEffect(() => {
-            getProducts();
-      }, [getProducts]);
-      return (
-            <div className='shop-page'>
-                  <Suspense fallback={<Spinner />}>
-                        <Route
-                              exact
-                              path={`${match.path}`}
-                              component={CollectionsOverviewContainer}
-                        />
-                        <Route
-                              path={`${match.path}/:collectionId`}
-                              component={CollectionPageContainer}
-                        />
-                  </Suspense>
-            </div>
-      )
-}
-const mapDispatchToProps = dispatch => ({
-      getProducts: () => dispatch(fetchProducts())
+  useEffect(() => {
+    getProducts();
+  }, [getProducts]);
+  return (
+    <div className='shop-page'>
+      <Suspense fallback={<Spinner />}>
+        <Route exact path={`${match.path}`} component={CollectionsOverview} />
+        <Route
+          path={`${match.path}/:collectionId`}
+          component={CollectionPage}
+        />
+      </Suspense>
+    </div>
+  );
+};
+const mapDispatchToProps = (dispatch) => ({
+  getProducts: () => dispatch(fetchProducts())
 });
-export default connect(null, mapDispatchToProps)(Shop)
+export default connect(null, mapDispatchToProps)(Shop);

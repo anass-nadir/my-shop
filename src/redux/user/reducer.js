@@ -1,33 +1,37 @@
 import { userActionTypes } from './types';
+import { setUserLocally, logoutUserLocally } from './utils'
 
 const INITIAL_STATE = {
   currentUser: null,
-  success: false,
+  isAuthenticated: localStorage.getItem('user-authenticated') != null,
   response: null
 };
 
 const userReducer = (state = INITIAL_STATE, action) => {
   switch (action.type) {
     case userActionTypes.LOGIN_USER_SUCCESS:
+    case userActionTypes.GET_PROFILE_SUCCESS:
+      setUserLocally(action?.response.user._id)
       return {
         ...state,
-        success: action.response.success,
-        currentUser: action?.response.data.user
+        isAuthenticated: true,
+        currentUser: action?.response.user
       };
     case userActionTypes.LOGIN_USER_ERROR:
     case userActionTypes.REGISTER_USER_ERROR:
       return {
         ...state,
-        response: action?.response.error,
-        success: action.response.success,
-        currentUser: null
+        response: action?.response.error
       };
-    case userActionTypes.LOGOUT_USER:
+    case userActionTypes.GET_PROFILE_ERROR:
+    case userActionTypes.LOGOUT_SUCCESS: {
+      logoutUserLocally()
       return {
         ...state,
-        response: null,
-        currentUser: null
+        currentUser: null,
+        isAuthenticated: false
       };
+    }
     default:
       return state;
   }

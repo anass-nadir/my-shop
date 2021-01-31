@@ -1,4 +1,6 @@
-const authenticateToken = require('./authenticateToken');
+const fieldsValidation = require('./fieldsValidation');
+const isAuthenticated = require('./isAuthenticated');
 module.exports = {
-  authenticateToken
+  fieldsValidation,
+  isAuthenticated
 };

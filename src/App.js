@@ -1,29 +1,27 @@
 import React, { useEffect, lazy, Suspense } from 'react';
-import { Switch, Route, Redirect, useLocation } from 'react-router-dom';
+import { Switch, Route, Redirect } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
+
+import { getProfile } from './redux/user/actions';
 
 import './App.css';
 
 import Header from './components/header/header';
 import Spinner from './components/spinner/spinner';
-import { checkUserToken } from './redux/user/actions';
-import { selectCurrentUser } from './redux/user/selectors';
+import SecureRoute from './components/secureRoute/secureRoute';
+
 const HomePage = lazy(() => import('./pages/index'));
 const ShopPage = lazy(() => import('./pages/shop/shop'));
 const SignInAndSignUpPage = lazy(() =>
   import('./pages/signInAndSignUp/signInAndSignUp')
 );
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout'));
-const useQuery = () => {
-  return new URLSearchParams(useLocation().search);
-};
-const App = ({ checkToken, currentUser }) => {
-  let authToken = useQuery().get('auth-token');
+
+const App = ({ isAuthenticated, currentUser, getUser }) => {
   useEffect(() => {
-    authToken && localStorage.setItem('token', authToken);
-    checkToken();
-  }, [checkToken, authToken]);
+    if (isAuthenticated && !currentUser) getUser();
+  }, [isAuthenticated, currentUser, getUser]);
+
   return (
     <div>
       <Header />
@@ -31,11 +29,15 @@ const App = ({ checkToken, currentUser }) => {
         <Suspense fallback={<Spinner />}>
           <Route exact path='/' component={HomePage} />
           <Route path='/shop' component={ShopPage} />
-          <Route path='/checkout' component={CheckoutPage} />
+          <SecureRoute
+            Component={CheckoutPage}
+            path='/checkout'
+            isAuthenticated={isAuthenticated}
+          />
           <Route
             path='/signin'
             component={() =>
-              currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
+              isAuthenticated ? <Redirect to='/' /> : <SignInAndSignUpPage />
             }
           />
         </Suspense>
@@ -43,11 +45,15 @@ const App = ({ checkToken, currentUser }) => {
     </div>
   );
 };
-const mapStateToProps = createStructuredSelector({
-  currentUser: selectCurrentUser
-});
-const mapDispatchToProps = (dispatch) => ({
-  checkToken: () => dispatch(checkUserToken())
-});
 
+const mapStateToProps = ({ user }) => {
+  return {
+    currentUser: user.currentUser,
+    isAuthenticated: user.isAuthenticated
+  };
+};
+
+const mapDispatchToProps = (dispatch) => ({
+  getUser: () => dispatch(getProfile())
+});
 export default connect(mapStateToProps, mapDispatchToProps)(App);

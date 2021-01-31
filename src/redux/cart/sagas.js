@@ -1,6 +1,4 @@
-import { takeLatest, put, call, select } from 'redux-saga/effects';
-
-import { userActionTypes } from '../user/types';
+import { takeLatest, put, call, select, all } from 'redux-saga/effects';
 
 import { cartActionTypes } from './types';
 import {
@@ -64,9 +62,15 @@ function* makePayment({ payload }) {
     });
   }
 }
-export function* cartSagas() {
-  yield takeLatest(userActionTypes.LOGOUT_USER, pushToCartOnLogout);
+function* onFetchCart() {
   yield takeLatest(cartActionTypes.FETCH_CART, fetchCart);
+}
+function* onPushToCart() {
   yield takeLatest(cartActionTypes.PUSH_TO_CART, pushToCart);
+}
+function* onMakePayment() {
   yield takeLatest(cartActionTypes.MAKE_PAYMENT, makePayment);
+}
+export function* cartSagas() {
+  yield all([call(onFetchCart), call(onPushToCart), call(onMakePayment)]);
 }

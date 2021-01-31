@@ -54,7 +54,7 @@ class SignIn extends React.Component {
                                     required
                               />
                               <button type='submit' className='custom-button'> Sign in </button>
-                              <a href="api/users/auth/google" className='custom-button google'> Sign in with google </a>
+                              <a href="api/auth/google" className='custom-button google'> Sign in with google </a>
                            
                         </form>
                   </div>

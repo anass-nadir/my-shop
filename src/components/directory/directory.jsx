@@ -1,30 +1,30 @@
-import React, { useEffect } from 'react';
-import { createStructuredSelector } from 'reselect';
+import React from 'react';
+import { compose } from 'redux';
+
 import { connect } from 'react-redux';
 import MenuItem from '../menuItem/menuItem';
-import { fetchCategories } from '../../redux/product/actions'
-import { selectAllCategories, selectIsFetching } from '../../redux/product/selectors'
+import withContainer from '../../hoc/withContainer';
 
 import './directory.scss';
 
-const Directory = ({ getCategories, categories }) => {
-  useEffect(() => {
-    getCategories();
-  }, [getCategories]);
+const Directory = ({ categories }) => {
   return (
-    <div className='directory-menu'>
-      {categories.map(item => (
-        <MenuItem key={item._id} item={item} />
-      ))}
-    </div>
+    (categories.length && (
+      <div className='directory-menu'>
+        {categories.map((item) => (
+          <MenuItem key={item._id} item={item} />
+        ))}
+      </div>
+    )) || <h1> There's nothing to display for now </h1>
   );
-}
-const mapStateToProps = createStructuredSelector({
-  categories: selectAllCategories,
-  isFetching: selectIsFetching
-});
-const mapDispatchToProps = dispatch => ({
-  getCategories: () => dispatch(fetchCategories())
-});
+};
+const mapStateToProps = ({ product }) => {
+  return {
+    categories: product.categories
+  };
+};
 
-export default connect(mapStateToProps, mapDispatchToProps)(Directory)
+export default compose(
+  withContainer({ stateName: 'product' }),
+  connect(mapStateToProps)
+)(Directory);

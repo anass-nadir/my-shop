@@ -1,17 +1,22 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import { createStructuredSelector } from 'reselect';
 
 import CheckoutItem from '../../components/checkoutItem/checkoutItem';
 import { Elements } from '@stripe/react-stripe-js';
 import { loadStripe } from '@stripe/stripe-js';
 import CheckoutForm from '../../components/checkoutForm/checkoutForm';
 
-import { selectCartItems, selectCartTotal } from '../../redux/cart/selectors';
+import { getCartTotal } from '../../redux/cart/utils';
 
 import './checkout.scss';
 
-const stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+let stripePromise;
+const getStripe = () => {
+  if (!stripePromise) {
+    stripePromise = loadStripe(process.env.REACT_APP_STRIPE_KEY);
+  }
+  return stripePromise;
+};
 
 const CheckoutPage = ({ cartItems, total }) => (
   <div className='checkout-page'>
@@ -41,15 +46,16 @@ const CheckoutPage = ({ cartItems, total }) => (
       <br />
       4242 4242 4242 4242
     </div>
-    <Elements stripe={stripePromise}>
+    <Elements stripe={getStripe()}>
       <CheckoutForm price={total} />
     </Elements>
   </div>
 );
 
-const mapStateToProps = createStructuredSelector({
-  cartItems: selectCartItems,
-  total: selectCartTotal
-});
-
+const mapStateToProps = ({ cart }) => {
+  return {
+    cartItems: cart.cartItems,
+    total: getCartTotal(cart.cartItems)
+  };
+};
 export default connect(mapStateToProps)(CheckoutPage);
