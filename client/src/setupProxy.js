@@ -1,4 +1,4 @@
-
+if(process.env.NODE_ENV === 'production') return false
 const { createProxyMiddleware } = require('http-proxy-middleware');
 module.exports = app => {
   app.use(
