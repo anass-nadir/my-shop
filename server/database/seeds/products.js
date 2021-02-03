@@ -3,27 +3,31 @@ const { mockProducts } = require('../mocks');
 
 const createProductsCategory = (category) => {
   return new Promise(async (resolve, reject) => {
-    let productsArray = [];
-    const save = ({ name, price, imageUrl }) => {
-      console.log(`<<<< Adding product ${name} >>>>`);
-      return new Promise((res, rej) => {
-        const newProduct = new Product({ name, price, imageUrl });
-        newProduct.save((err) => {
-          if (err) throw new Error(err.message);
-          console.log(
-            `<<<< Product ${newProduct.name} added successfully >>>>`
-          );
-          res(newProduct._id);
+    try {
+      console.log(`<<<< Adding category ${category.title} >>>>`);
+      let productsPromises = [];
+      const save = ({ name, price, imageUrl }) => {
+        console.log(`<<<< Adding product ${name} >>>>`);
+        return new Promise((res, rej) => {
+          const newProduct = new Product({ name, price, imageUrl });
+          newProduct.save((err) => {
+            if (err) throw new Error(err.message);
+            console.log(
+              `<<<< Product ${newProduct.name} added successfully >>>>`
+            );
+            res(newProduct._id);
+          });
         });
-      });
-    };
+      };
 
-    for (product of category.items) {
-      const productId = await save(product);
-      productsArray.push(productId);
+      for (product of category.items) {
+        productsPromises.push(save(product));
+      }
+      const productsArray = await Promise.all(productsPromises);
+      createCategory(category.title, category.imageUrl, productsArray, resolve);
+    } catch (error) {
+      reject(error.message);
     }
-    createCategory(category.title, category.imageUrl, productsArray, resolve);
-    //     resolve(productsArray);
   });
 };
 const createCategory = (title, imageUrl, products, done) => {
@@ -37,10 +41,16 @@ const createCategory = (title, imageUrl, products, done) => {
 
 module.exports = () => {
   return new Promise(async (resolve, reject) => {
-    for (category of mockProducts) {
-      console.log(`<<<< Adding category ${category.title} >>>>`);
-      await createProductsCategory(category);
+    try {
+      let categoriesPromises = [];
+      for (category of mockProducts) {
+        categoriesPromises.push(createProductsCategory(category));
+      }
+
+      await Promise.all(categoriesPromises);
+      resolve('**** Products and categories populated successfully ****');
+    } catch (error) {
+      reject(error.message);
     }
-    resolve('**** Products and categories populated successfully ****');
   });
 };

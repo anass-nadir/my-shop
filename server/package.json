@@ -4,12 +4,13 @@
   "private": true,
   "main": "index.js",
   "scripts": {
-    "dev": "nodemon -r dotenv/config index.js dotenv_config_path=.env.development.local",
-    "start": "node -r dotenv/config index.js dotenv_config_path=.env.production.local",
-    "seed-data": "node -r dotenv/config database/runSeeds.js dotenv_config_path=.env.development.local"
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "seed-data": "node database/runSeeds.js"
   },
   "dependencies": {
     "bcrypt": "^5.0.0",
+    "connect-mongo": "^3.2.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",
