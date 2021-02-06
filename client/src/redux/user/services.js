@@ -21,7 +21,7 @@ export const loginService = (request) => {
     });
 };
 export const getProfileService = () => {
-  return axios.get('/users/get-profile')
+  return axios.get('/auth/current-user')
   .then(({data}) => {
     return data
   })
