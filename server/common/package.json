@@ -1,0 +1,9 @@
+{
+  "name": "myshop-common",
+  "version": "0.1.0",
+  "dependencies": {
+    "cookie-session": "^1.4.0",
+    "express-validator": "^6.4.0",
+    "jsonwebtoken": "^8.5.1"
+  }
+}
