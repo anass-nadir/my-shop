@@ -22,7 +22,8 @@ const login = async (req, res) => {
         name: user.name,
         email: user.email
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      { expiresIn: 60 * 60 * 24 * 1000 }
     );
     req.session = {
       jwt: userJwt
@@ -52,7 +53,8 @@ const createUser = async (req, res) => {
         name: user.name,
         email: user.email
       },
-      process.env.JWT_SECRET
+      process.env.JWT_SECRET,
+      { expiresIn: 60 * 60 * 24 * 1000 }
     );
     req.session = {
       jwt: userJwt
