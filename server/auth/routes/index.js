@@ -1,6 +1,6 @@
 const router = require('express').Router();
 const { body } = require('express-validator');
-const { fieldsValidation, currentUser } = require('../../common/middlewares');
+const { fieldsValidation, currentUser } = require('@my-shop/common').Middlewares;
 const userCtrl = require('../controller');
 
 router.post(
