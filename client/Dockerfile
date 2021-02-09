@@ -17,14 +17,7 @@ RUN npm run build
 
 FROM nginx:latest
 
-RUN chmod o+r /etc/resolv.conf && apt-get update && apt-get install software-properties-common openssl -y
-
-RUN openssl req -x509 -nodes -days 365 -subj \
- "/C=CA/ST=QC/O=Company, Inc./CN=my-shop.com" \
-  -addext "subjectAltName=DNS:my-shop.com"\
- -newkey rsa:2048 -keyout /etc/ssl/private/nginx-selfsigned.key \
- -out /etc/ssl/certs/nginx-selfsigned.crt
-
 COPY --from=build /usr/src/app/build /var/www/html
+COPY nginx/ /etc/nginx/conf.d/
 
 CMD ["nginx", "-g", "daemon off;"]

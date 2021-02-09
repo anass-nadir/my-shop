@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-/* const {
+const {
   MONGO_USERNAME,
   MONGO_PASSWORD,
   MONGO_HOSTNAME,
@@ -8,8 +8,7 @@ const mongoose = require('mongoose');
 } = process.env;
 
 const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
- */
-module.exports = mongoose.connect(process.env.MONGODB_URI, {
+module.exports = mongoose.connect(url, {
   useNewUrlParser: true,
   useUnifiedTopology: true,
   useCreateIndex: true,

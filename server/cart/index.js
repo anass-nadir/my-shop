@@ -22,7 +22,7 @@ const sessOptions = {
   name: 'my-shop-sess',
   secret: process.env.SESSION_SECRET,
   signed: false,
-  secure: false,
+  secure: process.env.NODE_ENV === 'production',
   maxAge: 60 * 60 * 24 * 1000
 };
 app.set('trust proxy', 1);
@@ -40,8 +40,8 @@ app.all('*', (req, res) => {
 connectDb
   .then(() => {
     console.info('MongoDB connected');
-    app.listen(process.env.NODE_PORT, () => {
-      console.log(`🚀 Server running on port ${process.env.NODE_PORT}`);
+    app.listen(3000, () => {
+      console.log(`🚀 Server running on port 3000`);
     });
   })
   .catch((err) => {
