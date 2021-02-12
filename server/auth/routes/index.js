@@ -1,11 +1,15 @@
 const router = require('express').Router();
 const { body } = require('express-validator');
-const { fieldsValidation, currentUser } = require('@my-shop/common').Middlewares;
+const {
+  fieldsValidation,
+  currentUser
+} = require('@my-shop/common').Middlewares;
 const userCtrl = require('../controller');
 
 router.post(
   '/register',
   [
+    body('name').notEmpty().withMessage('Name is required'),
     body('email').notEmpty().isEmail().withMessage('A valid email is required'),
     body('password')
       .notEmpty()

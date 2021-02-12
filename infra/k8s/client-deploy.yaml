@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: client
-          image: myshop/client
-          imagePullPolicy: Never
+          image: myshp/client
+          imagePullPolicy: Always
           ports:
           - containerPort: 80
           resources:

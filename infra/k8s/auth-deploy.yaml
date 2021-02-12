@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: auth
-          image: myshop/auth
-          imagePullPolicy: Never
+          image: myshp/auth
+          imagePullPolicy: Always
           envFrom:
               - secretRef:
                   name: auth.env

@@ -1,40 +1,5 @@
-const express = require('express');
-const cors = require('cors');
-const session = require('cookie-session');
-// const { passport } = require('./services');
-const app = express();
-const Routes = require('./routes');
+const app = require('./app');
 const connectDb = require('./database');
-
-app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-
-app.use(
-  cors({
-    origin: process.env.PUBLIC_URL,
-    optionsSuccessStatus: 200,
-    credentials: true,
-    exposedHeaders: ['set-cookie']
-  })
-);
-const sessOptions = {
-  name: 'my-shop-sess',
-  secret: process.env.SESSION_SECRET,
-  signed: false,
-  secure: process.env.NODE_ENV === 'production',
-  maxAge: 60 * 60 * 24 * 1000
-};
-app.set('trust proxy', 1);
-
-app.use(session(sessOptions));
-// app.use(passport.initialize());
-// app.use(passport.session());
-
-app.use('/api/auth', Routes);
-
-app.all('*', (req, res) => {
-  res.status(404).send('route not found');
-});
 
 connectDb
   .then(() => {
