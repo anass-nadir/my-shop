@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: payment
-          image: myshop/payment
-          imagePullPolicy: Never
+          image: myshp/payment
+          imagePullPolicy: Always
           envFrom:
               - secretRef:
                   name: payment.env

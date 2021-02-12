@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: product
-          image: myshop/product
-          imagePullPolicy: Never
+          image: myshp/product
+          imagePullPolicy: Always
           envFrom:
               - secretRef:
                   name: product.env

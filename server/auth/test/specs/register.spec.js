@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../../app');
 
 it('returns the logged in user with the cookie header on successful register', async () => {
   const response = await request(app)

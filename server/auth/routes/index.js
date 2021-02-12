@@ -9,7 +9,7 @@ const userCtrl = require('../controller');
 router.post(
   '/register',
   [
-    body('name').notEmpty().withMessage('A valid email is required'),
+    body('name').notEmpty().withMessage('Name is required'),
     body('email').notEmpty().isEmail().withMessage('A valid email is required'),
     body('password')
       .notEmpty()

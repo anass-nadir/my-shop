@@ -14,8 +14,8 @@ spec:
     spec:
       containers:
         - name: cart
-          image: myshop/cart
-          imagePullPolicy: Never
+          image: myshp/cart
+          imagePullPolicy: Always
           envFrom:
               - secretRef:
                   name: cart.env

@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../app');
+const app = require('../../app');
 
 it('returns the current user when the token is valid', async () => {
   const cookie = await global.registerUser();
