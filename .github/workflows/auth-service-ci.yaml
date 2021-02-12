@@ -1,0 +1,44 @@
+name: Auth Service CI
+
+on:
+  push:
+    paths: 
+      - "server/auth/**"
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "server/auth"
+    steps:
+    - uses: actions/checkout@v2
+    - 
+      name: Run Auth Specs
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: "14"
+    - run: npm install
+    - run: npm test
+  
+  build-push-image: 
+    needs: test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      -
+       name: Set up Docker Buildx
+       uses: docker/setup-buildx-action@v1
+      - 
+        name: Login to DockerHub
+        uses: docker/login-action@v1
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+      - 
+        name: Build image and push to DockerHub
+        uses: docker/build-push-action@v2
+        with:
+          context: server/auth
+          file: server/auth/Dockerfile
+          push: true
+          tags: myshp/auth:latest
