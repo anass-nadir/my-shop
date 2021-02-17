@@ -1,0 +1,27 @@
+name: Common Package CD
+
+on:
+  push:
+    paths: 
+      - "server/common/**"
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: "server/common"
+    steps:
+    - uses: actions/checkout@v2
+    - 
+      name: Publish the common package 
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: "14"
+        registry-url: 'https://registry.npmjs.org'
+        scope: '@my-shop'
+    - run: npm install
+    - run: tsc
+    - run: npm publish --access public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+  

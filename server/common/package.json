@@ -1,9 +1,14 @@
 {
   "name": "@my-shop/common",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "my shop's common code",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anassNadir/my-shop.git",
+    "directory": "server/common"
+  },
   "files": [
     "build/**/*"
   ],
