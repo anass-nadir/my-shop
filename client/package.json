@@ -1,7 +1,13 @@
 {
   "name": "my-shop-client",
   "version": "0.1.0",
-  "private": true,
+  "description": "my shop's ui",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anassNadir/my-shop.git",
+    "directory": "client"
+  },
   "dependencies": {
     "@stripe/react-stripe-js": "^1.2.0",
     "@stripe/stripe-js": "^1.11.0",
@@ -9,7 +15,6 @@
     "@testing-library/react": "^9.5.0",
     "@testing-library/user-event": "^7.2.1",
     "axios": "^0.21.1",
-    "http-proxy-middleware": "^1.0.6",
     "node-sass": "^4.14.1",
     "react": "^16.14.0",
     "react-dom": "^16.14.0",

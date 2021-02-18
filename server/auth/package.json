@@ -2,8 +2,15 @@
   "name": "auth-service",
   "version": "0.1.0",
   "main": "index.js",
+  "description": "my shop's auth service",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anassNadir/my-shop.git",
+    "directory": "server/auth"
+  },
   "scripts": {
-    "dev": "nodemon -r dotenv/config index.js dotenv_config_path=.env.development.local",
+    "dev": "nodemon index.js",
     "start": "node index.js",
     "test": "jest --no-cache"
   },

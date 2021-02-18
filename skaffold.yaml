@@ -1,0 +1,48 @@
+apiVersion: skaffold/v2beta11
+kind: Config
+metadata:
+  name: my-shop
+deploy:
+  kubectl:
+    manifests:
+    - infra/k8s/dev/*.yaml
+build:
+  local:
+    push: false
+  artifacts:
+  - image: myshop/auth
+    context: server/auth
+    docker:
+      dockerfile: Dockerfile.dev
+    sync:
+      manual:
+        - src: '**/*.js'
+          dest: .
+  - image: myshop/cart
+    context: server/cart
+    docker:
+      dockerfile: Dockerfile.dev
+    sync:
+      manual:
+        - src: '**/*.js'
+          dest: .
+  - image: myshop/client
+    context: client
+    docker:
+      dockerfile: Dockerfile.dev
+    sync:
+      manual:
+        - src: 'src/**/*.js'
+          dest: .
+        - src: 'src/**/*.jsx'
+          dest: .
+        - src: 'src/**/*.scss'
+          dest: .
+  - image: myshop/product
+    context: server/product
+    docker:
+      dockerfile: Dockerfile.dev
+    sync:
+      manual:
+        - src: '**/*.js'
+          dest: .
