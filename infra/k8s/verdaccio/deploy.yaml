@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: verdaccio-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: verdaccio-deployment
+  template:
+    metadata:
+      labels:
+        app: verdaccio-deployment
+    spec:
+      containers:
+        - name: verdaccio
+          image: verdaccio/verdaccio
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 4873
+              name: http
+          resources:
+            limits:
+              cpu: 500m
+              memory: 512Mi
+            requests:
+              cpu: 200m
+              memory: 256Mi
+          volumeMounts:
+            - mountPath: /verdaccio/storage
+              name: storage
+              readOnly: false
+            - mountPath: /verdaccio/conf
+              name: config
+              readOnly: true
+      securityContext:
+        runAsUser: 100
+        fsGroup: 101
+      volumes:
+      - name: config
+        configMap:
+          name: verdaccio-config
+      - name: storage
+        persistentVolumeClaim:
+          claimName: verdaccio-pvc
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    name: verdaccio-service
+  name: verdaccio-service
+spec:
+  ports:
+    - port: 80
+      targetPort: 4873
+  type: NodePort
+  selector:
+    app: verdaccio-deployment

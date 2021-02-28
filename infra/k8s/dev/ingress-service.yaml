@@ -6,10 +6,20 @@ metadata:
       name: ingress-service
   annotations:
     kubernetes.io/ingress.class: nginx
+    kubernetes.io/proxy-body-size: 20m
 spec:
   rules:
-  - host: my-shop-dev.com
+  - host: "registry.my-shop-dev.com"
     http:
+      paths:
+      - pathType: Prefix
+        path: "/"
+        backend:
+          service:
+            name: verdaccio-service
+            port:
+              number: 80  
+  - http:
       paths:
         - path: /
           pathType: Prefix
