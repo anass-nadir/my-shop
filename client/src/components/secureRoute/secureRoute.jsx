@@ -1,11 +1,11 @@
 import { Route, Redirect } from 'react-router-dom';
 
-const SecureRoute = ({ Component, isAuthenticated, path }) => {
+const SecureRoute = ({ Component, currentUser, path }) => {
       return (
             <Route
             path={path}
             component={() =>
-              isAuthenticated ? <Component />  : <Redirect to='/signin' />
+              currentUser ? <Component />  : <Redirect to='/signin' />
             }
           />
       )

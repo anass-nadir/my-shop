@@ -3,7 +3,6 @@ import { setUserLocally, logoutUserLocally } from './utils'
 
 const INITIAL_STATE = {
   currentUser: null,
-  isAuthenticated: localStorage.getItem('user-authenticated') != null,
   response: null
 };
 
@@ -14,7 +13,6 @@ const userReducer = (state = INITIAL_STATE, action) => {
       setUserLocally(action?.response.user._id)
       return {
         ...state,
-        isAuthenticated: true,
         currentUser: action?.response.user
       };
     case userActionTypes.LOGIN_USER_ERROR:
@@ -28,8 +26,7 @@ const userReducer = (state = INITIAL_STATE, action) => {
       logoutUserLocally()
       return {
         ...state,
-        currentUser: null,
-        isAuthenticated: false
+        currentUser: null
       };
     }
     default:

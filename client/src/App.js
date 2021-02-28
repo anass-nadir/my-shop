@@ -17,10 +17,10 @@ const SignInAndSignUpPage = lazy(() =>
 );
 const CheckoutPage = lazy(() => import('./pages/checkout/checkout'));
 
-const App = ({ isAuthenticated, currentUser, getUser }) => {
+const App = ({ currentUser, getUser }) => {
   useEffect(() => {
-    if (isAuthenticated && !currentUser) getUser();
-  }, [isAuthenticated, currentUser, getUser]);
+    if (!currentUser) getUser();
+  }, [currentUser, getUser]);
 
   return (
     <div>
@@ -32,12 +32,12 @@ const App = ({ isAuthenticated, currentUser, getUser }) => {
           <SecureRoute
             Component={CheckoutPage}
             path='/checkout'
-            isAuthenticated={isAuthenticated}
+            currentUser={currentUser}
           />
           <Route
             path='/signin'
             component={() =>
-              isAuthenticated ? <Redirect to='/' /> : <SignInAndSignUpPage />
+              currentUser ? <Redirect to='/' /> : <SignInAndSignUpPage />
             }
           />
         </Suspense>
@@ -48,8 +48,7 @@ const App = ({ isAuthenticated, currentUser, getUser }) => {
 
 const mapStateToProps = ({ user }) => {
   return {
-    currentUser: user.currentUser,
-    isAuthenticated: user.isAuthenticated
+    currentUser: user.currentUser
   };
 };
 

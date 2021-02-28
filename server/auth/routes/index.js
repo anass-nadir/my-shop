@@ -56,7 +56,10 @@ router.post(
   // res.redirect(`${process.env.PUBLIC_URL}/signin?auth-token=${token}`);
 }); */
 router.get('/current-user', currentUser, (req, res) => {
-  res.send({ user: req.currentUser || null });
+  res.send({
+    user: req.currentUser || null,
+    success: req.currentUser !== null
+  });
 });
 router.get('/logout', userCtrl.logoutUser);
 module.exports = router;

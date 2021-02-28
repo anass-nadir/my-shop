@@ -5,6 +5,7 @@ interface UserPayload {
   _id: string;
   name: string;
   email: string;
+  exp?: number;
 }
 
 declare global {
@@ -25,11 +26,14 @@ export const currentUser = (
   }
 
   try {
-    req.currentUser = jwt.verify(
+    const user = jwt.verify(
       req.session.jwt,
       process.env.JWT_SECRET!
     ) as UserPayload;
-  } catch (err) {}
+    req.currentUser = user?.exp ? user : undefined;
+  } catch (err) {
+    req.currentUser = undefined;
+  }
 
   next();
 };

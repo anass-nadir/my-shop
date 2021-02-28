@@ -5,7 +5,7 @@ on:
     paths: 
       - "server/common/**"
 jobs:
-  publish:
+  test:
     runs-on: ubuntu-latest
     defaults:
       run:
@@ -13,13 +13,33 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - 
+      name: Run Specs
+      uses: actions/setup-node@v2.1.4
+      with:
+        node-version: "14"
+    - run: npm ci
+    - run: npm test
+  publish:
+    runs-on: ubuntu-latest
+    needs: test
+    defaults:
+      run:
+        working-directory: "server/common"
+    steps:
+    - uses: actions/checkout@v2
+    - name: Check version changes
+      uses: EndBug/version-check@v1
+      id: check
+    - 
+      if: steps.check.outputs.changed == 'true'
       name: Publish the common package 
       uses: actions/setup-node@v2.1.4
       with:
         node-version: "14"
         registry-url: 'https://registry.npmjs.org'
         scope: '@my-shop'
-    - run: npm install
+    - run: npm install typescript -g 
+    - run: npm install --production --silent
     - run: tsc
     - run: npm publish --access public
       env:
