@@ -31,7 +31,9 @@ jobs:
       uses: EndBug/version-check@v1
       id: check
       with:
-        diff-search: true
+        assume-same-version: new
+        static-checking: localIsNew
+        file-url: https://unpkg.com/@my-shop/common/package.json
         file-name: ./server/common/package.json
     - 
       if: steps.check.outputs.changed == 'true'
@@ -41,9 +43,8 @@ jobs:
         node-version: "14"
         registry-url: 'https://registry.npmjs.org'
         scope: '@my-shop'
-    - run: npm install typescript -g 
-    - run: npm install --production --silent
-    - run: tsc
+    - run: npm install --silent
+    - run: npm run build
     - run: npm publish --access public
       env:
         NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
