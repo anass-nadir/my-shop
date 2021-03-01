@@ -31,8 +31,8 @@ jobs:
       uses: EndBug/version-check@v1
       id: check
       with:
-        file-url: https://unpkg.com/@my-shop/common@latest/package.json
-        static-checking: localIsNew
+        diff-search: true
+        file-name: ./server/common/package.json
     - 
       if: steps.check.outputs.changed == 'true'
       name: Publish the common package 
