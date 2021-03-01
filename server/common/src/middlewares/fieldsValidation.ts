@@ -1,5 +1,6 @@
 import { Request, Response, NextFunction } from 'express';
 import { validationResult } from 'express-validator';
+import { FieldsValidationError } from '../errors';
 
 export const fieldsValidation = (
   req: Request,
@@ -9,7 +10,7 @@ export const fieldsValidation = (
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
-    return res.status(400).json({ success: false, errors: errors.array() });
+    throw new FieldsValidationError(errors.array());
   }
 
   next();
