@@ -1,6 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('cookie-session');
+const { errorHandler } = require('@my-shop/common').Middlewares;
+const { NotFoundError } = require('@my-shop/common').Errors;
 // const { passport } = require('./services');
 const app = express();
 const Routes = require('./routes');
@@ -32,7 +34,7 @@ app.use(session(sessOptions));
 app.use('/api/auth', Routes);
 
 app.all('*', (req, res) => {
-  res.status(404).send('route not found');
+  throw new NotFoundError();
 });
-
+app.use(errorHandler);
 module.exports = app;

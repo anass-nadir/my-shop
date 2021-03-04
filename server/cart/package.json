@@ -1,5 +1,5 @@
 {
-  "name": "cart-service",
+  "name": "@my-shop/cart-service",
   "version": "0.1.0",
   "main": "index.js",
   "description": "my shop's cart service",

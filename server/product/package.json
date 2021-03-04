@@ -1,5 +1,5 @@
 {
-  "name": "product-service",
+  "name": "@my-shop/product-service",
   "version": "0.1.0",
   "main": "index.js",
   "description": "my shop's product service",

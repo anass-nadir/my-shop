@@ -1,0 +1,27 @@
+{
+  "name": "my-shop",
+  "version": "0.1.2",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anassNadir/my-shop.git"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "commit": "cz",
+    "test": "git stash -k --include-untracked; npm test; git stash apply;",
+    "prettier:write": "prettier --write 'client/src/**/*.{js,jsx,scss}' 'server/**/*.{ts,js}'",
+    "prettier:check": "prettier --check 'client/src/**/*.{js,jsx,scss}' 'server/**/*.{ts,js}'"
+  },
+  "devDependencies": {
+    "@commitlint/cli": "^12.0.1",
+    "@commitlint/config-conventional": "^12.0.1",
+    "husky": "^5.1.3",
+    "prettier": "^2.2.1"
+  },
+  "config": {
+    "commitizen": {
+      "path": "cz-conventional-changelog"
+    }
+  }
+}

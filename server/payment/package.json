@@ -1,5 +1,5 @@
 {
-  "name": "payment-service",
+  "name": "@my-shop/payment-service",
   "version": "0.1.0",
   "main": "index.js",
   "description": "my shop's payment service",

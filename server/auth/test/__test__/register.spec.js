@@ -25,7 +25,7 @@ it('catches the invalid emails', async () => {
       confirmPassword: 'password'
     })
     .expect(400);
-  expect(response.body?.errors[0].msg).toEqual('A valid email is required');
+  expect(response.body?.errors[0].message).toEqual('A valid email is required');
 });
 
 it('catches the password mismatch', async () => {
@@ -38,7 +38,7 @@ it('catches the password mismatch', async () => {
       confirmPassword: 'password'
     })
     .expect(400);
-  expect(response.body?.errors[0].msg).toEqual('Password mismatch');
+  expect(response.body?.errors[0].message).toEqual('Password mismatch');
 });
 
 it('catches duplicate emails', async () => {
