@@ -3,13 +3,13 @@ name: Auth Service CI
 on:
   push:
     paths: 
-      - "server/auth/**"
+      - "server/services/auth/**"
 jobs:
   test:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: "server/auth"
+        working-directory: "server/services/auth"
     steps:
     - uses: actions/checkout@v2
     - 
@@ -38,7 +38,7 @@ jobs:
         name: Build image and push to DockerHub
         uses: docker/build-push-action@v2
         with:
-          context: server/auth
-          file: server/auth/Dockerfile
+          context: server/services/auth
+          file: server/services/auth/Dockerfile
           push: true
           tags: myshp/auth:latest

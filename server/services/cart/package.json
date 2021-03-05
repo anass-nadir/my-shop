@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/anassNadir/my-shop.git",
-    "directory": "server/cart"
+    "directory": "server/services/cart"
   },
   "scripts": {
     "dev": "nodemon index.js",
