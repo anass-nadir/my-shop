@@ -49,6 +49,7 @@
   "release": {
     "tagFormat": "@my-shop/common-v${version}",
     "branches": [
+      "master",
       "common-package-next",
       "common-package-next-major",
       {

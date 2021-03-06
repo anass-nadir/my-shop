@@ -1,10 +1,8 @@
 name: Common Package CI
 
 on:
-  pull_request:
+  push:
     branches: [common-package-next, common-package-next-major, common-package-beta, common-package-alpha]
-    types:
-      - opened
     paths: 
       - "server/packages/common/**"
 jobs:
