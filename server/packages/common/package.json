@@ -23,7 +23,7 @@
     "build": "tsc",
     "get:version": "node -p 'require(\"./package.json\").version'",
     "release": "npx semantic-release",
-    "test": "jest --no-cache"
+    "test": "jest"
   },
   "license": "ISC",
   "dependencies": {
