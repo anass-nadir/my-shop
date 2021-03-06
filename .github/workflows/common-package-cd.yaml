@@ -2,8 +2,7 @@ name: Common Package CD
 
 on:
   push:
-    branches:
-      - master
+    branches: [common-package, common-package-next, common-package-beta, common-package-alpha]
     paths: 
       - "server/packages/common/**"
 jobs:

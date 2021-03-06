@@ -1,6 +1,6 @@
 {
   "name": "@my-shop/common",
-  "version": "0.1.2",
+  "version": "0.1.3-alpha.0",
   "description": "my shop's common code",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
@@ -35,10 +35,6 @@
     "jsonwebtoken": "^8.5.1"
   },
   "devDependencies": {
-    "@semantic-release/commit-analyzer": "^8.0.1",
-    "@semantic-release/github": "^7.2.0",
-    "@semantic-release/npm": "^7.0.10",
-    "@semantic-release/release-notes-generator": "^9.0.1",
     "@types/jest": "^26.0.20",
     "conventional-changelog-conventionalcommits": "^4.5.0",
     "jest": "^26.6.3",
@@ -49,15 +45,19 @@
   "release": {
     "tagFormat": "@my-shop/common-v${version}",
     "branches": [
-      "master",
-      "common-package-next",
-      "common-package-next-major",
+      "common-package",
+      {
+        "name": "common-package-next",
+        "channel": "next"
+      },
       {
         "name": "common-package-beta",
+        "channel": "beta",
         "prerelease": true
       },
       {
         "name": "common-package-alpha",
+        "channel": "alpha",
         "prerelease": true
       }
     ],
@@ -75,12 +75,28 @@
         }
       ],
       [
-        "@semantic-release/github",
+        "@semantic-release/npm",
         {
-          "assets": "build"
+          "npmPublish": true,
+          "tarballDir": "build"
         }
       ],
-      "@semantic-release/npm"
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            {
+              "path": "build/middlewares/**",
+              "label": "Middlewares"
+            },
+            {
+              "path": "build/errors/**",
+              "label": "Errors"
+            }
+          ],
+          "addReleases": "bottom"
+        }
+      ]
     ]
   }
 }
