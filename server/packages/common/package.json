@@ -47,18 +47,11 @@
     "branches": [
       "common-package",
       {
-        "name": "common-package-next",
-        "channel": "next"
-      },
-      {
-        "name": "common-package-beta",
-        "channel": "beta",
-        "prerelease": true
+        "name": "common-package-next"
       },
       {
         "name": "common-package-alpha",
-        "channel": "alpha",
-        "prerelease": true
+        "prerelease": "alpha"
       }
     ],
     "plugins": [
