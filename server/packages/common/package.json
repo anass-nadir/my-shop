@@ -4,6 +4,9 @@
   "description": "my shop's common code",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
+  "publishConfig": {
+    "access": "public"
+  },
   "repository": {
     "type": "git",
     "url": "https://github.com/anassNadir/my-shop.git",
@@ -77,14 +80,7 @@
       [
         "@semantic-release/github",
         {
-          "assets": [
-            {
-              "path": "build/middlewares/*.js"
-            },
-            {
-              "path": "build/errors/*.js"
-            }
-          ],
+          "assets": [["build", "!**/*.ts"]],
           "addReleases": "bottom"
         }
       ]
