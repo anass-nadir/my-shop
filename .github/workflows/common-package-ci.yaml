@@ -8,7 +8,7 @@ on:
     paths: 
       - "server/packages/common/**"
 jobs:
-  test:
+  test-common-package:
     runs-on: ubuntu-latest
     defaults:
       run:
