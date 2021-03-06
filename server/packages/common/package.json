@@ -73,14 +73,14 @@
       [
         "@semantic-release/npm",
         {
-          "npmPublish": true,
+          "npmPublish": false,
           "tarballDir": "build"
         }
       ],
       [
         "@semantic-release/github",
         {
-          "assets": [["build", "!**/*.ts"]],
+          "assets": [["build/**/*.js", "!**/index.js"]],
           "addReleases": "bottom"
         }
       ]
