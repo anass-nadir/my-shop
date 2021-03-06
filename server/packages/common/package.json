@@ -79,12 +79,10 @@
         {
           "assets": [
             {
-              "path": "build/middlewares/**",
-              "label": "Middlewares"
+              "path": "build/middlewares/**/*.js"
             },
             {
-              "path": "build/errors/**",
-              "label": "Errors"
+              "path": "build/errors/**/*.js"
             }
           ],
           "addReleases": "bottom"
