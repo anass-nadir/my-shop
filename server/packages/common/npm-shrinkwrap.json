@@ -1,12 +1,12 @@
 {
   "name": "@my-shop/common",
-  "version": "0.1.3-alpha.0",
+  "version": "0.0.0",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
       "name": "@my-shop/common",
-      "version": "0.1.3-alpha.0",
+      "version": "0.0.0",
       "license": "ISC",
       "dependencies": {
         "@types/cookie-session": "^2.0.42",
