@@ -1,6 +1,6 @@
 {
   "name": "@anass-nadir/my-shop-common",
-  "version": "0.0.0",
+  "version": "1.0.0-alpha.1",
   "description": "my shop's common code",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
