@@ -1,15 +1,16 @@
 {
-  "name": "@my-shop/common",
-  "version": "1.0.0-alpha.1",
+  "name": "@anass-nadir/my-shop-common",
+  "version": "0.0.0",
   "description": "my shop's common code",
   "main": "./build/index.js",
   "types": "./build/index.d.ts",
   "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
     "access": "public"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/anassNadir/my-shop.git",
+    "url": "https://github.com/anass-nadir/my-shop.git",
     "directory": "server/packages/common"
   },
   "files": [
@@ -73,7 +74,6 @@
       [
         "@semantic-release/npm",
         {
-          "npmPublish": false,
           "tarballDir": "build"
         }
       ],
