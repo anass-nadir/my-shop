@@ -1,11 +1,11 @@
 {
-  "name": "@my-shop/common",
-  "version": "1.0.0-alpha.1",
+  "name": "@anass-nadir/my-shop-common",
+  "version": "0.0.0",
   "lockfileVersion": 2,
   "requires": true,
   "packages": {
     "": {
-      "name": "@my-shop/common",
+      "name": "@anass-nadir/my-shop-common",
       "version": "0.0.0",
       "license": "ISC",
       "dependencies": {
