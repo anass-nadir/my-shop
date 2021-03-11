@@ -1,6 +1,6 @@
 {
   "name": "my-shop",
-  "version": "0.1.2",
+  "version": "0.0.0",
   "private": true,
   "repository": {
     "type": "git",
@@ -9,7 +9,6 @@
   "scripts": {
     "prepare": "husky install",
     "commit": "cz",
-    "test": "git stash -k --include-untracked; npm test; git stash apply;",
     "prettier:write": "prettier --write 'client/src/**/*.{js,jsx,scss}' 'server/**/*.{ts,js}'",
     "prettier:check": "prettier --check 'client/src/**/*.{js,jsx,scss}' 'server/**/*.{ts,js}'"
   },

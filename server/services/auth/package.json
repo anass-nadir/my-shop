@@ -7,7 +7,7 @@
   "repository": {
     "type": "git",
     "url": "https://github.com/anassNadir/my-shop.git",
-    "directory": "server/auth"
+    "directory": "server/services/auth"
   },
   "scripts": {
     "dev": "nodemon index.js",
@@ -24,7 +24,6 @@
     "@my-shop/common": "^0.1.2",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
-    "crypto": "^1.0.1",
     "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "express-validator": "^6.9.2",
