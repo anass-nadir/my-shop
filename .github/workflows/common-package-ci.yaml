@@ -6,13 +6,13 @@ on:
     types:
       - opened
     paths: 
-      - "server/packages/common/**"
+      - "app/server/packages/common/**"
 jobs:
   test-common-package:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: "server/packages/common"
+        working-directory: "app/server/packages/common"
     steps:
     - name: Checkout repo
       uses: actions/checkout@v2

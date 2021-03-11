@@ -11,7 +11,7 @@ build:
     push: false
   artifacts:
   - image: myshop/auth
-    context: server/services/auth
+    context: app/server/services/auth
     docker:
       dockerfile: Dockerfile.dev
     sync:
@@ -19,7 +19,7 @@ build:
         - src: '**/*.js'
           dest: .
   - image: myshop/cart
-    context: server/services/cart
+    context: app/server/services/cart
     docker:
       dockerfile: Dockerfile.dev
     sync:
@@ -27,7 +27,7 @@ build:
         - src: '**/*.js'
           dest: .
   - image: myshop/client
-    context: client
+    context: app/client
     docker:
       dockerfile: Dockerfile.dev
     sync:
@@ -39,7 +39,7 @@ build:
         - src: 'src/**/*.scss'
           dest: .
   - image: myshop/product
-    context: server/services/product
+    context: app/server/services/product
     docker:
       dockerfile: Dockerfile.dev
     sync:

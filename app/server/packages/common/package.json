@@ -1,0 +1,83 @@
+{
+  "name": "@anass-nadir/my-shop-common",
+  "version": "1.0.0",
+  "description": "my shop's common code",
+  "main": "./build/index.js",
+  "types": "./build/index.d.ts",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anass-nadir/my-shop.git",
+    "directory": "app/server/packages/common"
+  },
+  "files": [
+    "build/**/*"
+  ],
+  "scripts": {
+    "build": "tsc",
+    "get:version": "node -p 'require(\"./package.json\").version'",
+    "release": "npx semantic-release",
+    "test": "jest"
+  },
+  "license": "ISC",
+  "dependencies": {
+    "@types/cookie-session": "^2.0.42",
+    "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.0",
+    "cookie-session": "^1.4.0",
+    "express-validator": "^6.4.0",
+    "jsonwebtoken": "^8.5.1"
+  },
+  "devDependencies": {
+    "@types/jest": "^26.0.20",
+    "conventional-changelog-conventionalcommits": "^4.5.0",
+    "jest": "^26.6.3",
+    "semantic-release": "^17.4.1",
+    "ts-jest": "^26.5.2",
+    "typescript": "^4.1.3"
+  },
+  "release": {
+    "tagFormat": "@my-shop/common-v${version}",
+    "branches": [
+      "common-package",
+      {
+        "name": "common-package-next",
+        "channel": "next"
+      },
+      {
+        "name": "common-package-alpha",
+        "prerelease": "alpha"
+      }
+    ],
+    "plugins": [
+      [
+        "@semantic-release/commit-analyzer",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      [
+        "@semantic-release/release-notes-generator",
+        {
+          "preset": "conventionalcommits"
+        }
+      ],
+      "@semantic-release/npm",
+      [
+        "@semantic-release/github",
+        {
+          "assets": [
+            [
+              "build/**/*.js",
+              "!**/index.js"
+            ]
+          ],
+          "addReleases": "bottom"
+        }
+      ]
+    ]
+  }
+}

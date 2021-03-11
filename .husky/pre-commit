@@ -1,6 +1,6 @@
 #!/bin/sh
-[ -n "$CI" ] && exit 0
-. "$(dirname "$0")/_/husky.sh"
 
-npm run prettier:write
-#npm test
+. "$(dirname "$0")/_/husky.sh"
+[ -n "$CI" ] && exit 0
+npm test
+npx lint-staged
