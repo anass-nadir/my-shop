@@ -1,5 +1,5 @@
 #!/bin/bash
-
+exit 0
 services=(auth cart payment product)
 for s in "${services[@]}"
 do

@@ -1,0 +1,35 @@
+{
+  "name": "@my-shop/auth-service",
+  "version": "0.1.0",
+  "main": "index.js",
+  "description": "my shop's auth service",
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/anassNadir/my-shop.git",
+    "directory": "app/server/services/auth"
+  },
+  "scripts": {
+    "dev": "nodemon index.js",
+    "start": "node index.js",
+    "test": "jest --no-cache"
+  },
+  "dependencies": {
+    "@anass-nadir/my-shop-common": "1.0.0",
+    "cookie-session": "^1.4.0",
+    "cors": "^2.8.5",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "express-validator": "^6.9.2",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.11.15",
+    "passport": "^0.4.1",
+    "passport-google-oauth20": "^2.0.0"
+  },
+  "devDependencies": {
+    "jest": "^26.6.3",
+    "mongodb-memory-server": "^6.9.3",
+    "nodemon": "^2.0.7",
+    "supertest": "^6.1.3"
+  }
+}

@@ -24,7 +24,7 @@ jobs:
     steps:
       - name: Auto Approve
         uses: hmarr/auto-approve-action@v2.0.0
-        if: github.actor == "my-shop-bot"
+        if: github.actor == 'my-shop[bot]'
         with:
           github-token: "${{ secrets.GITHUB_TOKEN }}"
 
@@ -34,10 +34,10 @@ jobs:
     steps:
       - name: Auto merging
         uses: pascalgn/automerge-action@v0.13.1
-        if: github.actor == "my-shop-bot"
+        if: github.actor == 'my-shop[bot]'
         env:
           GITHUB_TOKEN: "${{ secrets.GH_TOKEN }}"
-          GITHUB_LOGIN: "my-shop-bot"
+          GITHUB_LOGIN: "my-shop[bot]"
           MERGE_LABELS: ""
           MERGE_METHOD: "squash"
           MERGE_COMMIT_MESSAGE: "pull-request-title"
