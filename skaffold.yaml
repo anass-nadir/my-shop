@@ -9,11 +9,15 @@ deploy:
 build:
   local:
     push: false
+    useBuildkit: true
   artifacts:
   - image: myshop/auth
     context: app/server/services/auth
     docker:
       dockerfile: Dockerfile.dev
+      secret:
+        id: githubnpm
+        src: ./.npmrc
     sync:
       manual:
         - src: '**/*.js'
@@ -22,6 +26,9 @@ build:
     context: app/server/services/cart
     docker:
       dockerfile: Dockerfile.dev
+      secret:
+        id: githubnpm
+        src: ./.npmrc
     sync:
       manual:
         - src: '**/*.js'
@@ -42,6 +49,9 @@ build:
     context: app/server/services/product
     docker:
       dockerfile: Dockerfile.dev
+      secret:
+        id: githubnpm
+        src: ./.npmrc
     sync:
       manual:
         - src: '**/*.js'

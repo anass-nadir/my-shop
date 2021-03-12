@@ -2,14 +2,8 @@ FROM node:15-alpine
 
 WORKDIR /usr/src/app
 
-COPY package.json ./package.json
-
-COPY .npmrc ./.npmrc
-
-COPY npm-shrinkwrap.json ./npm-shrinkwrap.json
-
-RUN npm install
-
 COPY . .
+
+RUN --mount=type=secret,id=githubnpm,target=/root/.npmrc npm install
 
 CMD [ "npm", "run", "dev" ]
