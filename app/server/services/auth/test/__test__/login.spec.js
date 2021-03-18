@@ -2,13 +2,14 @@ const request = require('supertest');
 const app = require('../../app');
 
 it('fails when the user not found', async () => {
-  await request(app)
+  const response = await request(app)
     .post('/api/auth/login')
     .send({
       email: 'test@test.com',
       password: 'password'
     })
     .expect(400);
+  expect(response.body.success).toBeFalsy();
 });
 
 it('fails when the password is incorrect', async () => {

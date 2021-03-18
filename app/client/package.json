@@ -1,8 +1,9 @@
 {
   "name": "@my-shop/client",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "description": "my shop's ui",
   "license": "ISC",
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/anassNadir/my-shop.git",

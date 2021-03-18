@@ -8,13 +8,11 @@ USER node
 
 COPY package.json ./package.json
 
-COPY npm-shrinkwrap.json ./npm-shrinkwrap.json
-
-RUN npm install --production --silent
+RUN yarn install --production --silent
 
 COPY --chown=node:node . .
 
-RUN npm run build
+RUN yarn build
 
 
 FROM nginx:latest

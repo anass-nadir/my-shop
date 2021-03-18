@@ -3,7 +3,7 @@ const { body } = require('express-validator');
 const {
   fieldsValidation,
   currentUser
-} = require('@anass-nadir/my-shop-common').Middlewares;
+} = require('@anass-nadir/my-shop-common');
 const userCtrl = require('../controller');
 
 router.post(

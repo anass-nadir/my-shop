@@ -1,6 +1,7 @@
 {
   "name": "@my-shop/cart-service",
-  "version": "0.1.0",
+  "version": "0.0.0",
+  "private": true,
   "main": "index.js",
   "description": "my shop's cart service",
   "license": "ISC",
@@ -14,7 +15,7 @@
     "start": "node index.js"
   },
   "dependencies": {
-    "@anass-nadir/my-shop-common": "1.0.0",
+    "@anass-nadir/my-shop-common": "^0.0.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

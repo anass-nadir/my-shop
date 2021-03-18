@@ -1,8 +1,8 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('cookie-session');
-const { errorHandler } = require('@anass-nadir/my-shop-common').Middlewares;
-const { NotFoundError } = require('@anass-nadir/my-shop-common').Errors;
+const { errorHandler } = require('@anass-nadir/my-shop-common');
+const { NotFoundError } = require('@anass-nadir/my-shop-common');
 // const { passport } = require('./services');
 const app = express();
 const Routes = require('./routes');
@@ -33,7 +33,7 @@ app.use(session(sessOptions));
 
 app.use('/api/auth', Routes);
 
-app.all('*', (req, res) => {
+app.all('*', () => {
   throw new NotFoundError();
 });
 app.use(errorHandler);

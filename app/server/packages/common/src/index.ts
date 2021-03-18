@@ -1,2 +1,2 @@
-export * as Middlewares from './middlewares';
-export * as Errors from './errors';
+export * from './middlewares/index';
+export * from './errors/index';

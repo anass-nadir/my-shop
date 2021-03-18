@@ -31,7 +31,7 @@ function* pushToCart() {
     yield put({ type: cartActionTypes.PUSH_TO_CART_ERROR });
   }
 }
-function* pushToCartOnLogout({ payload }) {
+/* function* pushToCartOnLogout({ payload }) {
   try {
     yield pushToCart();
     yield put({ type: cartActionTypes.CLEAR_CART });
@@ -39,7 +39,7 @@ function* pushToCartOnLogout({ payload }) {
   } catch (error) {
     yield put({ type: cartActionTypes.PUSH_TO_CART_ERROR });
   }
-}
+} */
 function* makePayment({ payload }) {
   const currentUser = yield select(getCurrentUser);
   const cart = yield select(getCart);

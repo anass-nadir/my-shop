@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
 const pay = async (req, res) => {
   try {

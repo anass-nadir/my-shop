@@ -5,10 +5,7 @@ const app = express();
 const Routes = require('./routes');
 const connectDb = require('./database');
 
-const {
-  isAuthenticated,
-  currentUser
-} = require('@anass-nadir/my-shop-common').Middlewares;
+const { isAuthenticated, currentUser } = require('@anass-nadir/my-shop-common');
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());

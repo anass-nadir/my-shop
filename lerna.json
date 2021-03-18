@@ -1,0 +1,21 @@
+{
+  "version": "independent",
+  "npmClient": "yarn",
+  "useWorkspaces": true,
+  "workspaces": [
+    "app/server/packages/*",
+    "app/server/services/*",
+    "app/client/"
+  ],
+  "command": {
+    "version": {
+      "allowBranch": ["master", "prerelease"],
+      "conventionalCommits": true,
+      "createRelease": "github",
+      "changelogPreset": "conventional-changelog-conventionalcommits",
+      "exact": true,
+      "ignoreChanges": ["**/*.md", "**/__test__/**"],
+      "message": "chore(release): changes released [ci skip]"
+    }
+  }
+}

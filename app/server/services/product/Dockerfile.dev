@@ -4,6 +4,6 @@ WORKDIR /usr/src/app
 
 COPY . .
 
-RUN --mount=type=secret,id=githubnpm,target=/root/.npmrc npm install
+RUN --mount=type=secret,id=githubnpm,target=/root/.npmrc yarn install
 
-CMD [ "npm", "run", "dev" ]
+CMD [ "yarn", "dev" ]

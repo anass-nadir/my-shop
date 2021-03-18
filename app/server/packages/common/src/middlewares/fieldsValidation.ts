@@ -6,7 +6,7 @@ export const fieldsValidation = (
   req: Request,
   res: Response,
   next: NextFunction
-) => {
+): any => {
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {

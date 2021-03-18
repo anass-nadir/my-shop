@@ -1,7 +1,8 @@
 {
   "name": "@my-shop/auth-service",
-  "version": "0.1.0",
+  "version": "0.0.0",
   "main": "index.js",
+  "private": true,
   "description": "my shop's auth service",
   "license": "ISC",
   "repository": {
@@ -11,11 +12,12 @@
   },
   "scripts": {
     "dev": "nodemon index.js",
+    "build": "DOCKER_BUILDKIT=1 docker build . -t myshp/auth",
     "start": "node index.js",
     "test": "jest --no-cache"
   },
   "dependencies": {
-    "@anass-nadir/my-shop-common": "1.0.0",
+    "@anass-nadir/my-shop-common": "^0.0.0",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "dotenv": "^8.2.0",

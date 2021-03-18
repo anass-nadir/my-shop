@@ -1,3 +1,3 @@
 module.exports = {
-  projects: ['app/server/packages/*', 'app/server/services/*']
+  projects: ['app/client', 'app/server/packages/*', 'app/server/services/*']
 };

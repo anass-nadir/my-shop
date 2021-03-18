@@ -9,7 +9,7 @@ export class DatabaseConnectionError extends CustomError {
     Object.setPrototypeOf(this, DatabaseConnectionError.prototype);
   }
 
-  serializeErrors() {
+  serializeErrors(): { message: string; field?: string }[] {
     return [{ message: 'Error connecting to database' }];
   }
 }

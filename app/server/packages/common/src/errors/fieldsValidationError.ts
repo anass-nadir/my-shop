@@ -9,7 +9,7 @@ export class FieldsValidationError extends CustomError {
     Object.setPrototypeOf(this, FieldsValidationError.prototype);
   }
 
-  serializeErrors() {
+  serializeErrors(): { message: string; field?: string }[] {
     return this.errors.map(err => {
       return { message: err.msg, field: err.param };
     });
