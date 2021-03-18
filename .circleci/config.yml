@@ -1,0 +1,86 @@
+version: 2.1
+orbs:
+  node: circleci/node@4.2.0
+  win: circleci/windows@2.4.0
+commands:
+  update-yarn:
+    steps:
+      - run:
+          name: Update yarn
+          command: yarn global add yarn@latest
+  setup-npmrc:
+    steps:
+      - run:
+          name: Add .npmrc file
+          command: printf "@anass-nadir:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s" "${NPM_TOKEN}" >> .npmrc
+  install:
+    steps:
+      - run:
+          name: Install dependencies
+          command: yarn install
+  audit:
+    steps:
+      - run:
+          name: Audit dependencies
+          command: yarn audit
+  build-packages:
+    steps:
+      - run:
+          name: Build packages
+          command: yarn build-packages
+  test:
+    steps:
+      - run:
+          name: Test since last commit
+          command: yarn test-ci
+  save-cache:
+    steps:
+      - save_cache:
+          key: v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
+          paths:
+            - node_modules
+  run-all:
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
+            - v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-lock-master-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
+      - update-yarn
+      - setup-npmrc
+      - install
+      - save-cache
+      - build-packages
+      - test
+jobs:
+  node13:
+    docker:
+      - image: node:13
+    steps:
+      - run-all
+  node14:
+    docker:
+      - image: node:14
+    steps:
+      - run-all
+  node15:
+    docker:
+      - image: node:15
+    steps:
+      - run-all
+  windows:
+    executor: win/default
+    steps:
+      - run-all
+
+workflows:
+  node:
+    jobs:
+      - node13:
+          context: my-shop
+      - node14:
+          context: my-shop 
+      - node15:
+          context: my-shop 
+      - windows:
+          context: my-shop
