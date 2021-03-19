@@ -22,7 +22,7 @@
     "test-ci": "jest --bail --runInBand --ci",
     "test-staged": "jest --bail --onlyChanged",
     "test-lastCommit": "jest --bail --lastCommit --runInBand",
-    "release": "lerna publish --conventional-commits --yes",
+    "release": "lerna publish --conventional-commits --conventional-graduate --yes",
     "pre-release": "lerna publish --conventional-commits --conventional-prerelease --yes",
     "prettier-check": "prettier --check '**/*.{js,ts,jsx,scss,json,yaml,yml,md}'"
   },
