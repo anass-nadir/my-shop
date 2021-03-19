@@ -14,14 +14,16 @@
   "scripts": {
     "postinstall": "husky install",
     "commit": "cz",
-    "build-packages": "tsc -b app/server/packages/*",
-    "clean-packages": "tsc -b app/server/packages/* --clean",
+    "build-packages": "tsc -b app/server/packages/**",
+    "clean-packages": "tsc -b app/server/packages/** --clean",
     "lint": "eslint . --ext .js,.ts",
     "lint-fix": "eslint . --ext .js,.ts --fix",
+    "test": "jest",
+    "test-ci": "jest --bail --runInBand --ci",
     "test-staged": "jest --bail --onlyChanged",
-    "test-ci": "jest --bail --lastCommit --runInBand",
-    "release": "lerna publish --conventional-commits",
-    "pre-release": "lerna publish --conventional-commits --conventional-prerelease",
+    "test-lastCommit": "jest --bail --lastCommit --runInBand",
+    "release": "lerna publish --conventional-commits --yes",
+    "pre-release": "lerna publish --conventional-commits --conventional-prerelease --yes",
     "prettier-check": "prettier --check '**/*.{js,ts,jsx,scss,json,yaml,yml,md}'"
   },
   "devDependencies": {
