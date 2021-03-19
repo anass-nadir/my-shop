@@ -13,6 +13,9 @@
       "ignoreChanges": ["**/*.md", "**/__test__/**"],
       "message": "chore(release): changes released 🎉 [ci skip]"
     },
+    "publish": {
+      "registry": "https://npm.pkg.github.com"
+    },
     "run": {
       "npmClient": "yarn"
     }

@@ -4,7 +4,7 @@
   "main": "index.js",
   "private": true,
   "description": "my shop's auth service",
-  "license": "ISC",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "https://github.com/anassNadir/my-shop.git",
