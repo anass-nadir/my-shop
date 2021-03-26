@@ -1,0 +1,15 @@
+FROM node:15-alpine
+
+WORKDIR /usr/src/app
+
+ARG Service
+
+COPY tsconfig.build.json .
+COPY nodemon.json .
+COPY server/services/${Service}/ .
+COPY server/packages/ packages/
+
+RUN yarn
+RUN yarn build
+
+CMD [ "yarn", "dev" ]
