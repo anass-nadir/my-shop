@@ -10,12 +10,7 @@
       "createRelease": "github",
       "changelogPreset": "conventional-changelog-conventionalcommits",
       "exact": true,
-      "ignoreChanges": [
-        "**/*.md",
-        "**/__test__/**",
-        "**/Dockerfile*",
-        "**/*.yaml"
-      ],
+      "ignoreChanges": ["**/*.md", "**/__test__/**"],
       "message": "chore(release): changes released 🎉 [ci skip]"
     },
     "publish": {

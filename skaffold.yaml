@@ -5,54 +5,54 @@ metadata:
 deploy:
   kubectl:
     manifests:
-      - infra/k8s/dev/*.yaml
+    - infra/k8s/dev/*.yaml
 build:
   local:
     push: false
     useBuildkit: true
-  tagPolicy:
-    sha256: {}
   artifacts:
-    - image: myshop/auth
-      context: app
-      docker:
-        dockerfile: Dockerfile.dev
-        buildArgs:
-          Service: auth
-      sync:
-        infer:
-          - 'server/services/auth/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-    - image: myshop/cart
-      context: app
-      docker:
-        dockerfile: Dockerfile.dev
-        buildArgs:
-          Service: cart
-      sync:
-        infer:
-          - 'server/services/cart/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-    - image: myshop/product
-      context: app
-      docker:
-        dockerfile: Dockerfile.dev
-        buildArgs:
-          Service: product
-      sync:
-        infer:
-          - 'server/services/product/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-
-    - image: myshop/client
-      context: app/client
-      docker:
-        dockerfile: Dockerfile.dev
-      sync:
-        manual:
-          - src: 'src/**/*.js'
-            dest: .
-          - src: 'src/**/*.jsx'
-            dest: .
-          - src: 'src/**/*.scss'
-            dest: .
+  - image: myshop/auth
+    context: app/server/services/auth
+    docker:
+      dockerfile: Dockerfile.dev
+      secret:
+        id: githubnpm
+        src: ./.npmrc
+    sync:
+      manual:
+        - src: '**/*.js'
+          dest: .
+  - image: myshop/cart
+    context: app/server/services/cart
+    docker:
+      dockerfile: Dockerfile.dev
+      secret:
+        id: githubnpm
+        src: ./.npmrc
+    sync:
+      manual:
+        - src: '**/*.js'
+          dest: .
+  - image: myshop/client
+    context: app/client
+    docker:
+      dockerfile: Dockerfile.dev
+    sync:
+      manual:
+        - src: 'src/**/*.js'
+          dest: .
+        - src: 'src/**/*.jsx'
+          dest: .
+        - src: 'src/**/*.scss'
+          dest: .
+  - image: myshop/product
+    context: app/server/services/product
+    docker:
+      dockerfile: Dockerfile.dev
+      secret:
+        id: githubnpm
+        src: ./.npmrc
+    sync:
+      manual:
+        - src: '**/*.js'
+          dest: .

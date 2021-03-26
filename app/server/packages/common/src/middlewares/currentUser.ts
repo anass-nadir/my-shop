@@ -1,10 +1,17 @@
 import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
-import { IUserJwtPayload } from '../types';
+
+interface UserPayload {
+  _id: string;
+  name: string;
+  email: string;
+  exp?: number;
+}
+
 declare global {
   namespace Express {
     interface Request {
-      currentUser?: IUserJwtPayload;
+      currentUser?: UserPayload;
     }
   }
 }
@@ -23,7 +30,7 @@ export const currentUser = (
     const user = jwt.verify(
       req.session.jwt,
       process.env.JWT_SECRET!
-    ) as IUserJwtPayload;
+    ) as UserPayload;
     req.currentUser = user?.exp ? user : undefined;
   } catch (err) {
     req.currentUser = undefined;

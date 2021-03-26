@@ -1,0 +1,9 @@
+FROM node:15-alpine
+
+WORKDIR /usr/src/app
+
+COPY . .
+
+RUN --mount=type=secret,id=githubnpm,target=/root/.npmrc yarn install
+
+CMD [ "yarn", "dev" ]
