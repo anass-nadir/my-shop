@@ -2,11 +2,7 @@
   "version": "independent",
   "npmClient": "yarn",
   "useWorkspaces": true,
-  "workspaces": [
-    "app/server/packages/*",
-    "app/server/services/*",
-    "app/client/"
-  ],
+  "packages": ["app/server/packages/*", "app/server/services/*", "app/client/"],
   "command": {
     "version": {
       "allowBranch": ["master", "prerelease"],
@@ -14,8 +10,22 @@
       "createRelease": "github",
       "changelogPreset": "conventional-changelog-conventionalcommits",
       "exact": true,
-      "ignoreChanges": ["**/*.md", "**/__test__/**"],
-      "message": "chore(release): changes released [ci skip]"
+      "ignoreChanges": [
+        "**/*.md",
+        "**/__test__/**",
+        "**/Dockerfile*",
+        "**/package.json*",
+        "**/jest.config.ts*",
+        "**/tsconfig.*",
+        "**/*.yaml"
+      ],
+      "message": "chore(release): changes released 🎉 [ci skip]"
+    },
+    "publish": {
+      "registry": "https://npm.pkg.github.com"
+    },
+    "run": {
+      "npmClient": "yarn"
     }
   }
 }

@@ -1,6 +1,5 @@
 version: 2.1
 orbs:
-  node: circleci/node@4.2.0
   win: circleci/windows@2.4.0
 commands:
   update-yarn:
@@ -8,21 +7,21 @@ commands:
       - run:
           name: Update yarn
           command: yarn global add yarn@latest
-  setup-npmrc:
-    steps:
-      - run:
-          name: Add .npmrc file
-          command: printf "@anass-nadir:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s" "${NPM_TOKEN}" >> .npmrc
   install:
     steps:
       - run:
           name: Install dependencies
-          command: yarn install
+          command: yarn --immutable --ignore-engines
   audit:
     steps:
       - run:
           name: Audit dependencies
           command: yarn audit
+  lint:
+    steps:
+      - run:
+          name: Lint app
+          command: yarn lint
   build-packages:
     steps:
       - run:
@@ -31,12 +30,12 @@ commands:
   test:
     steps:
       - run:
-          name: Test since last commit
+          name: Test
           command: yarn test-ci
   save-cache:
     steps:
       - save_cache:
-          key: v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
+          key: v1-my-shop-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
   run-all:
@@ -44,18 +43,17 @@ commands:
       - checkout
       - restore_cache:
           keys:
-            - v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
-            - v{{ .Environment.CIRCLE_CACHE_VERSION }}-{{ arch }}-npm-lock-master-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
+            - v1-my-shop-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
       - update-yarn
-      - setup-npmrc
       - install
       - save-cache
+      - lint
       - build-packages
       - test
 jobs:
-  node13:
+  node12:
     docker:
-      - image: node:13
+      - image: node:12
     steps:
       - run-all
   node14:
@@ -76,11 +74,27 @@ jobs:
 workflows:
   node:
     jobs:
-      - node13:
-          context: my-shop
+      - node12:
+          filters:
+            branches:
+              ignore:
+                - master
+                - prerelease
       - node14:
-          context: my-shop 
+          filters:
+            branches:
+              ignore:
+                - master
+                - prerelease
       - node15:
-          context: my-shop 
+          filters:
+            branches:
+              ignore:
+                - master
+                - prerelease
       - windows:
-          context: my-shop
+          filters:
+            branches:
+              ignore:
+                - master
+                - prerelease

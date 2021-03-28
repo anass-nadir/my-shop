@@ -1,0 +1,11 @@
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "incremental": true,
+    "rootDir": "./src"
+  },
+  "references": [{ "path": "./packages/common/tsconfig.build.json" }],
+  "paths": {
+    "@anass-nadir/my-shop-common/": ["./packages/common/build/"]
+  }
+}
