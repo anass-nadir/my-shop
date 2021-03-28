@@ -7,21 +7,21 @@ commands:
       - run:
           name: Update yarn
           command: yarn global add yarn@latest
-  setup-npmrc:
-    steps:
-      - run:
-          name: Add .npmrc file
-          command: printf "@anass-nadir:registry=https://npm.pkg.github.com/\n//npm.pkg.github.com/:_authToken=%s" "${NPM_TOKEN}" >> .npmrc
   install:
     steps:
       - run:
           name: Install dependencies
-          command: yarn install --ignore-engines
+          command: yarn --immutable --ignore-engines
   audit:
     steps:
       - run:
           name: Audit dependencies
           command: yarn audit
+  lint:
+    steps:
+      - run:
+          name: Lint app
+          command: yarn lint
   build-packages:
     steps:
       - run:
@@ -44,11 +44,10 @@ commands:
       - restore_cache:
           keys:
             - v1-my-shop-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
-            - v1-my-shop-{{ arch }}-npm-lock-master-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
       - update-yarn
-      - setup-npmrc
       - install
       - save-cache
+      - lint
       - build-packages
       - test
 jobs:
@@ -76,28 +75,24 @@ workflows:
   node:
     jobs:
       - node12:
-          context: my-shop
           filters:
             branches:
               ignore:
                 - master
                 - prerelease
       - node14:
-          context: my-shop
           filters:
             branches:
               ignore:
                 - master
                 - prerelease
       - node15:
-          context: my-shop
           filters:
             branches:
               ignore:
                 - master
                 - prerelease
       - windows:
-          context: my-shop
           filters:
             branches:
               ignore:
