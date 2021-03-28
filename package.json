@@ -26,8 +26,8 @@
     "test-ci": "jest --bail --runInBand --ci",
     "test-staged": "jest --bail --onlyChanged",
     "test-lastCommit": "jest --bail --lastCommit --runInBand",
-    "release": "lerna publish --conventional-commits --conventional-graduate --yes",
-    "pre-release": "lerna publish --conventional-commits --conventional-prerelease --yes",
+    "release": "lerna publish --conventional-graduate --yes",
+    "pre-release": "lerna publish --conventional-prerelease --yes",
     "prettier-check": "prettier --check '**/*.{ts,scss,json,yaml,yml,md}'",
     "dev": "skaffold dev"
   },

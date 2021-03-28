@@ -3,6 +3,7 @@
   "version": "0.0.1-alpha.0",
   "private": true,
   "main": "build/index.js",
+  "types": "build/@declarations/index.d.ts",
   "description": "my shop's payment service",
   "license": "MIT",
   "workspaces": [
@@ -14,10 +15,10 @@
     "directory": "app/server/services/payment"
   },
   "scripts": {
-    "dev": "concurrently -k \"tsc --b './tsconfig.build.json' -w\" \"nodemon build\"",
-    "build": "tsc -b './tsconfig.build.json'",
+    "dev": "concurrently -k \"tsc -b ./tsconfig.build.json -w\" \"nodemon build\"",
+    "build": "tsc -b ./tsconfig.build.json",
     "start": "NODE_ENV=production node build",
-    "clean": "tsc -b './tsconfig.build.json' --clean"
+    "clean": "tsc -b ./tsconfig.build.json --clean"
   },
   "dependencies": {
     "@anass-nadir/my-shop-common": "0.0.1-alpha.0",

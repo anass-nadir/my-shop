@@ -44,7 +44,6 @@ commands:
       - restore_cache:
           keys:
             - v1-my-shop-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
-            - v1-my-shop-{{ arch }}-npm-lock-master-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
       - update-yarn
       - install
       - save-cache
