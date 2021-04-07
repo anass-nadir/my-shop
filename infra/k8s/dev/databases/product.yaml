@@ -1,0 +1,64 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  labels:
+    app: product-storage
+  name: product-storage
+provisioner: k8s.io/minikube-hostpath
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: product-db-service
+  labels:
+    name: product-db-service
+spec:
+  clusterIP: None
+  selector:
+    app: product-db
+  ports:
+    - port: 27017
+      targetPort: 27017
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: product-db
+  labels:
+    app: product-db
+spec:
+  selector:
+    matchLabels:
+      app: product-db
+  serviceName: 'product-db-service'
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: product-db
+        environment: development
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: product-db
+          image: mongo
+          envFrom:
+            - secretRef:
+                name: product-db.env
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: product-pvc
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: product-pvc
+        annotations:
+          volume.beta.kubernetes.io/storage-class: 'product-storage'
+      spec:
+        accessModes: ['ReadWriteOnce']
+        resources:
+          requests:
+            storage: 1Gi

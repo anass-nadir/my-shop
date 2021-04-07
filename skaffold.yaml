@@ -1,4 +1,4 @@
-apiVersion: skaffold/v2beta11
+apiVersion: skaffold/v2beta13
 kind: Config
 metadata:
   name: my-shop
@@ -9,7 +9,7 @@ deploy:
 build:
   local:
     push: false
-    useBuildkit: true
+    # useBuildkit: true
   tagPolicy:
     sha256: {}
   artifacts:
@@ -23,6 +23,8 @@ build:
         infer:
           - 'server/services/auth/src/**/*.ts'
           - 'server/packages/**/src/**/*.ts'
+          - 'server/services/auth/src/*.ts'
+          - 'server/packages/**/src/*.ts'
     - image: myshop/cart
       context: app
       docker:
@@ -33,6 +35,8 @@ build:
         infer:
           - 'server/services/cart/src/**/*.ts'
           - 'server/packages/**/src/**/*.ts'
+          - 'server/services/cart/src/*.ts'
+          - 'server/packages/**/src/*.ts'
     - image: myshop/product
       context: app
       docker:
@@ -43,6 +47,21 @@ build:
         infer:
           - 'server/services/product/src/**/*.ts'
           - 'server/packages/**/src/**/*.ts'
+          - 'server/services/product/src/*.ts'
+          - 'server/packages/**/src/*.ts'
+
+    - image: myshop/payment
+      context: app
+      docker:
+        dockerfile: Dockerfile.dev
+        buildArgs:
+          Service: payment
+      sync:
+        infer:
+          - 'server/services/payment/src/**/*.ts'
+          - 'server/packages/**/src/**/*.ts'
+          - 'server/services/payment/src/*.ts'
+          - 'server/packages/**/src/*.ts'
 
     - image: myshop/client
       context: app/client

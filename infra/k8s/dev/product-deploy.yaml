@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: product-deployment 
+  name: product-deployment
 spec:
   replicas: 1
   selector:
@@ -17,8 +17,8 @@ spec:
           image: myshop/product
           imagePullPolicy: Never
           envFrom:
-              - secretRef:
-                  name: product.env
+            - secretRef:
+                name: product.env
       restartPolicy: Always
 ---
 apiVersion: v1

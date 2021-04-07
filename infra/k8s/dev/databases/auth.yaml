@@ -1,0 +1,64 @@
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  labels:
+    app: auth-storage
+  name: auth-storage
+provisioner: k8s.io/minikube-hostpath
+reclaimPolicy: Retain
+volumeBindingMode: Immediate
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: auth-db-service
+  labels:
+    name: auth-db-service
+spec:
+  clusterIP: None
+  selector:
+    app: auth-db
+  ports:
+    - port: 27017
+      targetPort: 27017
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: auth-db
+  labels:
+    app: auth-db
+spec:
+  selector:
+    matchLabels:
+      app: auth-db
+  serviceName: 'auth-db-service'
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: auth-db
+        environment: development
+    spec:
+      terminationGracePeriodSeconds: 10
+      containers:
+        - name: auth-db
+          image: mongo
+          envFrom:
+            - secretRef:
+                name: auth-db.env
+          ports:
+            - containerPort: 27017
+          volumeMounts:
+            - name: auth-pvc
+              mountPath: /data/db
+  volumeClaimTemplates:
+    - metadata:
+        name: auth-pvc
+        annotations:
+          volume.beta.kubernetes.io/storage-class: 'auth-storage'
+      spec:
+        accessModes: ['ReadWriteOnce']
+        resources:
+          requests:
+            storage: 1Gi

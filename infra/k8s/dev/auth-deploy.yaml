@@ -17,8 +17,8 @@ spec:
           image: myshop/auth
           imagePullPolicy: Never
           envFrom:
-              - secretRef:
-                  name: auth.env
+            - secretRef:
+                name: auth.env
       restartPolicy: Always
 ---
 apiVersion: v1
