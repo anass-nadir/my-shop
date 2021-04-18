@@ -5,9 +5,6 @@ import { currentUser } from '../';
 
 jest.setTimeout(2000);
 describe('currentUser from session middleware', () => {
-  beforeAll(() => {
-    process.env.JWT_SECRET = 'asdasdasd';
-  });
   it('should pass without returning the current user', () => {
     currentUser(
       global.mockRequest as Request,

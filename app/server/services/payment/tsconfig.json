@@ -1,17 +1,9 @@
 {
+  "extends": "../../../../tsconfig.json",
   "compilerOptions": {
-    "module": "CommonJS",
-    "lib": ["ES2019"],
-    "target": "ES2019",
-    "declaration": true,
-    "strict": true,
-    "esModuleInterop": true,
-    "composite": true,
     "outDir": "./build",
-    "skipLibCheck": true,
     "declarationDir": "./build/@declarations",
-    "forceConsistentCasingInFileNames": true
+    "rootDir": "./src"
   },
-  "include": ["./src/**/*.ts"],
-  "exclude": ["**/test/**", "**/__test__/**"]
+  "include": ["./src"]
 }

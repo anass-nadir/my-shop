@@ -24,7 +24,7 @@ jobs:
       - name: Install dependencies
         run: yarn --immutable
       - name: Build packages
-        run: yarn build-packages:changed
+        run: yarn build:changed
       - name: Fetch tags
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
       - name: PreRelease

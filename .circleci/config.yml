@@ -22,11 +22,11 @@ commands:
       - run:
           name: Lint app
           command: yarn lint
-  build-packages:
+  build-common-package:
     steps:
       - run:
-          name: Build packages
-          command: yarn build-packages
+          name: Build common package
+          command: yarn build:common
   test:
     steps:
       - run:
@@ -48,7 +48,7 @@ commands:
       - install
       - save-cache
       - lint
-      - build-packages
+      - build-common-package
       - test
 jobs:
   node12:

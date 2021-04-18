@@ -8,6 +8,11 @@ it('clears the cookie after logging out', async () => {
     .send({
       name: 'test',
       email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
     })

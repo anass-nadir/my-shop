@@ -1,7 +1,7 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
 import { fieldsValidation, currentUser } from '@anass-nadir/my-shop-common';
-import { createUser, login, logoutUser } from '../controller';
+import { createUser, loginUser, logoutUser } from '../controller';
 
 const router = Router();
 
@@ -9,10 +9,23 @@ router.post(
   '/register',
   [
     body('name').notEmpty().withMessage('Name is required'),
-    body('email').notEmpty().isEmail().withMessage('A valid email is required'),
+    body('email')
+      .notEmpty()
+      .withMessage('Email is required')
+      .isEmail()
+      .withMessage('A valid email is required'),
+    body('phone')
+      .notEmpty()
+      .withMessage('Phone number is required')
+      .isMobilePhone('any')
+      .withMessage('A valid phone number is required'),
+    body('town').notEmpty().withMessage('Please enter your city'),
+    body('country').notEmpty().withMessage('Please enter your country'),
+    body('address').notEmpty().withMessage('Please enter your address'),
     body('password')
       .notEmpty()
       .trim()
+      .isStrongPassword({ minLength: 6, minSymbols: 1, returnScore: true })
       .withMessage('A strong password is required'),
     body('confirmPassword')
       .notEmpty()
@@ -30,30 +43,16 @@ router.post(
 router.post(
   '/login',
   [
-    body('email').notEmpty().isEmail().withMessage('A valid email is required'),
-    body('password')
+    body('email')
       .notEmpty()
-      .trim()
-      .withMessage('A strong password is required')
+      .withMessage('Please enter your email')
+      .isEmail()
+      .withMessage('A valid email is required'),
+    body('password').notEmpty().trim().withMessage('Please enter your password')
   ],
   fieldsValidation,
-  login
+  loginUser
 );
-
-/* router.get(
-  '/google',
-  passport.authenticate('google', {
-    scope: ['profile', 'email']
-  })
-); */
-/* router.get('/google/callback/', passport.authenticate('google'), (req, res) => {
-  return res.status(201).json({
-    success: true,
-    user: Object.assign(req.user, { password: undefined }),
-    message: 'User created!'
-  });
-  // res.redirect(`${process.env.PUBLIC_URL}/signin?auth-token=${token}`);
-}); */
 router.get('/current-user', currentUser, (req, res) => {
   res.send({
     user: req.currentUser || null,

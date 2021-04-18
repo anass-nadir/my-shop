@@ -15,8 +15,6 @@ declare global {
 
 let mongo: any;
 beforeAll(async () => {
-  process.env.JWT_SECRET = 'Culpa ex veniam sint est ut mollit.';
-  process.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';
   mongo = new MongoMemoryServer();
   const mongoUri = await mongo.getUri();
 
@@ -42,13 +40,19 @@ afterAll(async () => {
 });
 
 global.registerUser = async () => {
-  const name = 'test';
-  const email = 'test@test.com';
-  const password = 'password';
-  const confirmPassword = 'password';
   const response = await request(app)
     .post('/api/auth/register')
-    .send({ name, email, password, confirmPassword })
+    .send({
+      name: 'test',
+      email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
+      password: 'password',
+      confirmPassword: 'password'
+    })
     .expect(201);
 
   return response.get('Set-Cookie');

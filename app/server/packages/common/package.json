@@ -17,9 +17,10 @@
     "build/**/*"
   ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "watch": "tsc -b tsconfig.build.json --watch --preserveWatchOutput",
+    "build": "tsc -b ./tsconfig.build.json",
+    "clean": "rm -rf ./build && rm tsconfig.tsbuildinfo",
+    "watch": "tsc -b ./tsconfig.build.json --watch --preserveWatchOutput",
+    "test": "echo \"Error: run tests from root\" && exit 1",
     "get:version": "node -p 'require(\"./package.json\").version'"
   },
   "license": "MIT",

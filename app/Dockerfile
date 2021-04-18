@@ -1,4 +1,4 @@
-FROM node:15-alpine as build
+FROM node:15-alpine
 
 WORKDIR /usr/src/app
 
@@ -8,22 +8,12 @@ RUN chown -R node:node /usr/src/app
 
 USER node
 
-COPY --chown=node:node tsconfig.build.json .
-COPY --chown=node:node server/services/${Service}/ .
-COPY --chown=node:node server/packages/common packages/common
+COPY --chown=node:node server/services/${Service}/build build
+COPY --chown=node:node server/services/${Service}/package.json .
 
-RUN yarn --frozen-lockfile
-RUN yarn clean
-RUN yarn build
+COPY --chown=node:node server/packages/common/build packages/common/build
+COPY --chown=node:node server/packages/common/package.json packages/common/package.json
 
-
-FROM node:15-alpine
-WORKDIR /app
-
-COPY --from=build /usr/src/app/build build
-COPY --from=build /usr/src/app/package.json .
-COPY --from=build /usr/src/app/packages/common/build packages/common/build
-COPY --from=build /usr/src/app/packages/common/package.json packages/common/package.json
 
 RUN  yarn --production --frozen-lockfile
 

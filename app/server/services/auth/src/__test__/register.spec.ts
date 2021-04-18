@@ -8,6 +8,11 @@ it('returns the logged in user with the cookie header on successful register', a
     .send({
       name: 'test',
       email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
     })
@@ -22,6 +27,11 @@ it('catches the invalid emails', async () => {
     .send({
       name: 'test',
       email: 'qweqweq',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
     })
@@ -35,6 +45,11 @@ it('catches the password mismatch', async () => {
     .send({
       name: 'test',
       email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'pass',
       confirmPassword: 'password'
     })
@@ -48,6 +63,11 @@ it('catches duplicate emails', async () => {
     .send({
       name: 'test',
       email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
     })
@@ -58,9 +78,16 @@ it('catches duplicate emails', async () => {
     .send({
       name: 'test',
       email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
     })
     .expect(400);
-  expect(response.body.error).toMatch(/dup key: { : "test@test.com" }/);
+  expect(response.body?.errors[0]?.message).toMatch(
+    /dup key: { : "test@test.com" }/
+  );
 });

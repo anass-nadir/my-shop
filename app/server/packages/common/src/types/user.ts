@@ -3,4 +3,5 @@ export interface IUserJwtPayload {
   name: string;
   email: string;
   exp?: number;
+  iat?: number;
 }

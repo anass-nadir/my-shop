@@ -1,11 +1,22 @@
 {
   "compilerOptions": {
     "module": "commonjs",
+    "moduleResolution": "Node",
     "lib": ["ES2019"],
     "target": "ES2019",
     "strict": true,
     "noEmitOnError": true,
+    "declaration": true,
+    "noImplicitAny": false,
+    "composite": true,
+    "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
+    "declarationMap": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "incremental": true,
+    "outDir": "build",
     "skipLibCheck": true
-  }
+  },
+  "include": ["./app/server"]
 }

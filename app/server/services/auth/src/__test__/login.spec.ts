@@ -19,6 +19,11 @@ it('fails when the password is incorrect', async () => {
     .send({
       name: 'test',
       email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
     })
@@ -31,7 +36,7 @@ it('fails when the password is incorrect', async () => {
       password: 'pass'
     })
     .expect(400);
-  expect(response.body.error).toEqual('Invalid credentials');
+  expect(response.body?.errors[0]?.message).toEqual('Invalid credentials');
 });
 
 it('returns the logged in user with set cookie header when credentials are valid', async () => {
@@ -40,6 +45,11 @@ it('returns the logged in user with set cookie header when credentials are valid
     .send({
       name: 'test',
       email: 'test@test.com',
+      phone: '+212644444444',
+      gender: 'm',
+      address: 'xxxx',
+      town: 'xxxx',
+      country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
     })
