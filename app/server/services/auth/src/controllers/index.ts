@@ -1,6 +1,5 @@
 import { Request, Response } from 'express';
 import { signUser, BadRequestError } from '@anass-nadir/my-shop-common';
-
 import User from '../models';
 
 const loginUser = async (req: Request, res: Response): Promise<Response> => {
@@ -83,10 +82,22 @@ const createUser = async (req: Request, res: Response): Promise<Response> => {
 };
 const logoutUser = (req: Request, res: Response): Response => {
   req.session = null;
-  res.clearCookie('my-shop-sess', { path: '/' });
+  res.clearCookie(process.env.SESSION_NAME!, { path: '/' });
   return res.status(200).json({
     success: true
   });
 };
-
-export { loginUser, createUser, logoutUser };
+const authenticatedUser = async (
+  req: Request,
+  res: Response
+): Promise<Response> => {
+  const user = await User.findById(req.currentUser?._id);
+  if (!user) {
+    throw new BadRequestError('User not found');
+  }
+  return res.status(200).json({
+    user: user,
+    success: true
+  });
+};
+export { loginUser, createUser, logoutUser, authenticatedUser };

@@ -2,16 +2,22 @@
 /* eslint-disable import/no-extraneous-dependencies */
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, connection, Types } from 'mongoose';
-import { agent as request } from 'supertest';
-import { signUser } from '@anass-nadir/my-shop-common';
+import { agent as request, Test } from 'supertest';
+import { signTestUser } from '@anass-nadir/my-shop-common';
 import { app } from '../app';
-import { CategoryDoc } from '../models/category';
 
 declare global {
   namespace NodeJS {
     interface Global {
-      addCategory(): Promise<CategoryDoc>;
-      signIn(): [string];
+      addCategory(
+        cookie: [string] | { payload: IUser.JwtPayload; token: string },
+        data?: ICategory.Schema
+      ): Test;
+      signIn(): [string] | { payload: IUser.JwtPayload; token: string };
+      addProduct(
+        cookie: [string] | { payload: IUser.JwtPayload; token: string },
+        data?: IProduct.TestPayload
+      ): Test;
     }
   }
 }
@@ -43,33 +49,41 @@ afterAll(async () => {
 });
 
 global.signIn = () => {
-  const payload = {
-    _id: new Types.ObjectId().toHexString(),
-    name: 'test',
-    email: 'test@test.com'
-  };
-
-  const token = signUser(payload, process.env.JWT_SECRET!, {
-    expiresIn: 60 * 60 * 24 * 1000
+  return signTestUser(process.env.JWT_SECRET!, process.env.SESSION_NAME!, {
+    expiresIn: 1
   });
-
-  const session = { jwt: token };
-  const sessionJSON = JSON.stringify(session);
-  const base64 = Buffer.from(sessionJSON).toString('base64');
-
-  return [`my-shop-sess=${base64}; path=/; httponly`];
 };
-
-global.addCategory = async () => {
-  const user = global.signIn();
-  const response = await request(app)
-    .post('/api/products/create-category')
-    .set('Cookie', user)
-    .send({
+global.addProduct = (cookie, data) => {
+  const productData = Object.assign(
+    {},
+    {
+      categoryId: new Types.ObjectId().toHexString(),
+      name: 'test',
+      description: 'test',
+      price: 400,
+      quantity: 10,
+      imageUrl: 'https://test.jpg',
+      details: [{ color: 'red' }, { size: 's' }]
+    },
+    data
+  );
+  return request(app)
+    .post('/api/products/create')
+    .set('Cookie', cookie as [string])
+    .send(productData);
+};
+global.addCategory = (cookie, data) => {
+  const categoryData = Object.assign(
+    {},
+    {
       title: 'test',
       slug: 'test',
       imageUrl: 'https://test.jpg'
-    })
-    .expect(201);
-  return response.body?.category;
+    },
+    data
+  );
+  return request(app)
+    .post('/api/products/create-category')
+    .set('Cookie', cookie as [string])
+    .send(categoryData);
 };

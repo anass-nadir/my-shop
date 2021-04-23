@@ -30,6 +30,7 @@
     "release": "lerna publish --conventional-graduate --yes",
     "pre-release": "lerna publish --conventional-prerelease --yes",
     "prettier-check": "prettier --check '**/*.{ts,scss,json,yaml,yml,md}'",
+    "predev": "chmod +x ./scripts/predev-deploy.sh & ./scripts/predev-deploy.sh",
     "dev": "concurrently --kill-others-on-fail -s first \"yarn watch:common\" \"wait-on ./app/server/packages/common/build/index.js && skaffold dev\""
   },
   "devDependencies": {

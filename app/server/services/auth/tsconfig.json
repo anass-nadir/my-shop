@@ -3,7 +3,8 @@
   "compilerOptions": {
     "outDir": "./build",
     "declarationDir": "./build/@declarations",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "typeRoots": ["../../../../node_modules/@types", "../../../@types"]
   },
-  "include": ["./src"]
+  "include": ["./src", "../../../@types"]
 }

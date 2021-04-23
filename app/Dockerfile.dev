@@ -6,7 +6,7 @@ ARG Service
 
 COPY tsconfig.build.json .
 COPY nodemon.json .
-
+COPY @types ./@types
 COPY server/services/${Service}/src src
 COPY server/services/${Service}/package.json .
 

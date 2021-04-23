@@ -12,11 +12,10 @@
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
     "declarationMap": true,
-    "isolatedModules": true,
     "sourceMap": true,
     "incremental": true,
-    "outDir": "build",
-    "skipLibCheck": true
+    "typeRoots": ["node_modules/@types", "app/@types"],
+    "outDir": "build"
   },
-  "include": ["./app/server"]
+  "include": ["./app/server", "app/@types"]
 }

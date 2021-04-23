@@ -17,8 +17,8 @@
     "declarationMap": true,
     "sourceMap": true,
     "incremental": true,
-    "skipLibCheck": true
+    "typeRoots": ["node_modules/@types", "@types"]
   },
   "exclude": ["node_modules", "**/test/**", "**/__test__/**"],
-  "include": ["./src"]
+  "include": ["./src", "@types"]
 }

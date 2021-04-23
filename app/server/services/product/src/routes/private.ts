@@ -1,11 +1,15 @@
 import { Router } from 'express';
 import { body } from 'express-validator';
-import { isAuthenticated, fieldsValidation } from '@anass-nadir/my-shop-common';
+import {
+  isAuthenticated,
+  currentUser,
+  fieldsValidation
+} from '@anass-nadir/my-shop-common';
 import { createCategory, createProduct } from '../controllers';
 
 const router = Router();
 
-router.use(isAuthenticated);
+router.use([currentUser, isAuthenticated]);
 
 router.post(
   '/create',
