@@ -1,66 +1,34 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
-import { agent as request } from 'supertest';
-import { app } from '../app';
-
 it('returns the logged in user with the cookie header on successful register', async () => {
-  const response = await request(app)
-    .post('/api/auth/register')
-    .send({
-      name: 'test',
-      email: 'test@test.com',
-      password: 'password',
-      confirmPassword: 'password'
-    })
-    .expect(201);
+  const response = await global.registerUser().expect(201);
   expect(response.get('Set-Cookie')).toBeDefined();
   expect(response.body).toHaveProperty('user');
 });
 
 it('catches the invalid emails', async () => {
-  const response = await request(app)
-    .post('/api/auth/register')
-    .send({
-      name: 'test',
-      email: 'qweqweq',
-      password: 'password',
-      confirmPassword: 'password'
+  const response = await global
+    .registerUser({
+      email: 'qweqweq'
     })
     .expect(400);
   expect(response.body?.errors[0].message).toEqual('A valid email is required');
 });
 
 it('catches the password mismatch', async () => {
-  const response = await request(app)
-    .post('/api/auth/register')
-    .send({
-      name: 'test',
-      email: 'test@test.com',
-      password: 'pass',
-      confirmPassword: 'password'
+  const response = await global
+    .registerUser({
+      password: 'pass'
     })
     .expect(400);
   expect(response.body?.errors[0].message).toEqual('Password mismatch');
 });
 
 it('catches duplicate emails', async () => {
-  await request(app)
-    .post('/api/auth/register')
-    .send({
-      name: 'test',
-      email: 'test@test.com',
-      password: 'password',
-      confirmPassword: 'password'
-    })
-    .expect(201);
+  await global.registerUser().expect(201);
 
-  const response = await request(app)
-    .post('/api/auth/register')
-    .send({
-      name: 'test',
-      email: 'test@test.com',
-      password: 'password',
-      confirmPassword: 'password'
-    })
-    .expect(400);
-  expect(response.body.error).toMatch(/dup key: { : "test@test.com" }/);
+  const response = await global.registerUser().expect(400);
+  expect(response.body?.errors[0]?.message).toMatch(
+    /dup key: { : "test@test.com" }/
+  );
 });
+// eslint-disable-next-line jest/no-export
+export {};

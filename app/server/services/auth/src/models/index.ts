@@ -1,30 +1,26 @@
+import { IUserSchema } from 'IUser';
 import { Schema, Document, Model, model } from 'mongoose';
-import { scrypt, randomBytes } from 'crypto';
-import { promisify } from 'util';
 
-const scryptAsync = promisify(scrypt);
+import { PasswordService } from '../services/password';
 
-interface IUser {
-  name: string;
-  email: string;
-  password: string;
-  googleId: string;
-  customerId: string;
-}
-
-interface UserDoc extends IUser, Document {
+interface UserDoc extends IUserSchema, Document {
   comparePassword(password: string): Promise<boolean>;
 }
 
 interface UserModel extends Model<UserDoc> {
-  build(attrs: IUser): IUser;
+  build(attrs: IUserSchema): UserDoc;
 }
 
 const userSchema = new Schema(
   {
-    googleId: { type: String },
     name: { type: String, required: true },
-    customerId: { type: String },
+    phone: { type: String, required: true },
+    gender: { type: String, enum: ['m', 'f'] },
+    address: { type: String, required: true },
+    town: { type: String, required: true },
+    country: { type: String, required: true },
+    stripeId: { type: String },
+    googleId: { type: String },
     email: {
       type: String,
       required: true,
@@ -33,8 +29,7 @@ const userSchema = new Schema(
       lowercase: true
     },
     password: {
-      type: String,
-      required: () => this!['googleId'] && this!['googleId'] === null
+      type: String
     }
   },
   {
@@ -47,28 +42,11 @@ const userSchema = new Schema(
     }
   }
 );
-userSchema.pre('save', async function (next): Promise<void> {
-  if (this.isModified('password')) {
-    const salt = randomBytes(8).toString('hex');
-
-    const derivedKey = (await scryptAsync(
-      this.get('password'),
-      salt,
-      64
-    )) as Buffer;
-    this.set('password', `${derivedKey.toString('hex')}.${salt}`);
-  }
-  next();
-});
-userSchema.methods.comparePassword = async function (password: string) {
-  const [hashedPassword, salt] = this.get('password').split('.');
-
-  const suppliedPassword = (await scryptAsync(password, salt, 64)) as Buffer;
-  return suppliedPassword.toString('hex') === hashedPassword;
-};
+userSchema.pre('save', PasswordService.hash);
+userSchema.methods.comparePassword = PasswordService.compare;
 userSchema.indexes();
 
-userSchema.statics.build = (attrs: IUser) => {
+userSchema.statics.build = attrs => {
   return new User(attrs);
 };
 

@@ -5,11 +5,10 @@ metadata:
 deploy:
   kubectl:
     manifests:
-      - infra/k8s/dev/*.yaml
+      - infra/k8s/dev/deploys/*.yaml
 build:
   local:
     push: false
-    # useBuildkit: true
   tagPolicy:
     sha256: {}
   artifacts:
@@ -21,10 +20,9 @@ build:
           Service: auth
       sync:
         infer:
-          - 'server/services/auth/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/auth/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
     - image: myshop/cart
       context: app
       docker:
@@ -33,10 +31,9 @@ build:
           Service: cart
       sync:
         infer:
-          - 'server/services/cart/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/cart/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
     - image: myshop/product
       context: app
       docker:
@@ -45,10 +42,9 @@ build:
           Service: product
       sync:
         infer:
-          - 'server/services/product/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/product/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
 
     - image: myshop/payment
       context: app
@@ -58,10 +54,9 @@ build:
           Service: payment
       sync:
         infer:
-          - 'server/services/payment/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/payment/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
 
     - image: myshop/client
       context: app/client

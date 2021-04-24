@@ -22,11 +22,16 @@ commands:
       - run:
           name: Lint app
           command: yarn lint
+  build-shared-package:
+    steps:
+      - run:
+          name: Build Common package
+          command: yarn build:common
   build-packages:
     steps:
       - run:
           name: Build packages
-          command: yarn build-packages
+          command: yarn build:changed
   test:
     steps:
       - run:
@@ -48,6 +53,7 @@ commands:
       - install
       - save-cache
       - lint
+      - build-shared-package
       - build-packages
       - test
 jobs:

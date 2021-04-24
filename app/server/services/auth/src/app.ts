@@ -1,8 +1,9 @@
 import express from 'express';
+import 'express-async-errors';
 import cors from 'cors';
 import session from 'cookie-session';
 import { errorHandler, NotFoundError } from '@anass-nadir/my-shop-common';
-import Routes from './routes';
+import { publicRoutes, privateRoutes } from './routes';
 const app = express();
 
 app.use(express.urlencoded({ extended: true }));
@@ -17,7 +18,7 @@ app.use(
   })
 );
 const sessOptions = {
-  name: 'my-shop-sess',
+  name: process.env.SESSION_NAME,
   secret: process.env.SESSION_SECRET,
   signed: false,
   secure: process.env.NODE_ENV !== 'test',
@@ -29,7 +30,7 @@ app.use(session(sessOptions));
 // app.use(passport.initialize());
 // app.use(passport.session());
 
-app.use('/api/auth', Routes);
+app.use('/api/auth', [publicRoutes, privateRoutes]);
 
 app.all('*', () => {
   throw new NotFoundError();

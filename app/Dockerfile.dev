@@ -6,10 +6,14 @@ ARG Service
 
 COPY tsconfig.build.json .
 COPY nodemon.json .
-COPY server/services/${Service}/ .
-COPY server/packages/ packages/
+
+COPY server/services/${Service}/src src
+COPY server/services/${Service}/package.json .
+
+COPY server/packages/common/build packages/common/build
+COPY server/packages/common/@types packages/common/@types
+COPY server/packages/common/package.json packages/common/package.json
 
 RUN yarn
-RUN yarn build
 
 CMD [ "yarn", "dev" ]

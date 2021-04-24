@@ -13,9 +13,9 @@
       "ignoreChanges": [
         "**/*.md",
         "**/__test__/**",
+        "**/test/**",
         "**/Dockerfile*",
-        "**/package.json*",
-        "**/jest.config.ts*",
+        "**/jest.config.*",
         "**/tsconfig.*",
         "**/*.yaml"
       ],
