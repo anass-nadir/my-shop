@@ -1,17 +1,10 @@
+import { IProductSchema } from 'IProduct';
 import { Schema, Document, Model, model } from 'mongoose';
 
-interface IProduct {
-  name: string;
-  description?: string;
-  price: number;
-  quantity: number;
-  imageUrl: string;
-  details?: [];
-}
-export interface ProductDoc extends IProduct, Document {}
+export interface ProductDoc extends IProductSchema, Document {}
 
 interface ProductModel extends Model<ProductDoc> {
-  build(attrs: IProduct): ProductDoc;
+  build(attrs: IProductSchema): ProductDoc;
 }
 
 const productSchema = new Schema(
@@ -47,7 +40,7 @@ const productSchema = new Schema(
     }
   }
 );
-productSchema.statics.build = (attrs: IProduct) => {
+productSchema.statics.build = attrs => {
   return new Product(attrs);
 };
 const Product = model<ProductDoc, ProductModel>('Product', productSchema);

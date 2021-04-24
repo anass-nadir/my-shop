@@ -12,6 +12,7 @@ COPY --chown=node:node server/services/${Service}/build build
 COPY --chown=node:node server/services/${Service}/package.json .
 
 COPY --chown=node:node server/packages/common/build packages/common/build
+COPY --chown=node:node server/packages/common/@types packages/common/@types
 COPY --chown=node:node server/packages/common/package.json packages/common/package.json
 
 

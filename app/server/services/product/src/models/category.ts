@@ -1,15 +1,10 @@
-import { Schema, Document, Model, model, Types } from 'mongoose';
+import { ICategorySchema } from 'ICategory';
+import { Schema, Document, Model, model } from 'mongoose';
 
-interface ICategory {
-  title: string;
-  slug: string;
-  imageUrl: string;
-}
-
-export interface CategoryDoc extends ICategory, Document {}
+export interface CategoryDoc extends ICategorySchema, Document {}
 
 interface CategoryModel extends Model<CategoryDoc> {
-  build(attrs: ICategory): CategoryDoc;
+  build(attrs: ICategorySchema): CategoryDoc;
 }
 
 const categorySchema = new Schema(
@@ -40,7 +35,7 @@ const categorySchema = new Schema(
     }
   }
 );
-categorySchema.statics.build = (attrs: ICategory) => {
+categorySchema.statics.build = attrs => {
   return new Category(attrs);
 };
 const Category = model<CategoryDoc, CategoryModel>('Category', categorySchema);

@@ -5,20 +5,15 @@
     "lib": ["ES2019"],
     "target": "ES2019",
     "outDir": "./build",
-    "declarationDir": "./build/@declarations",
     "rootDir": "./src",
     "strict": true,
     "noEmitOnError": true,
-    "declaration": true,
     "noImplicitAny": false,
-    "composite": true,
     "forceConsistentCasingInFileNames": true,
     "esModuleInterop": true,
-    "declarationMap": true,
     "sourceMap": true,
-    "incremental": true,
     "skipLibCheck": true
   },
-  "exclude": ["node_modules", "**/test/**", "**/__test__/**"],
-  "include": ["./src"]
+  "exclude": ["**/test/**", "**/__test__/**"],
+  "include": ["./src", "./packages/common/@types"]
 }

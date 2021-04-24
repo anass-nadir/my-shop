@@ -5,7 +5,7 @@ metadata:
 deploy:
   kubectl:
     manifests:
-      - infra/k8s/dev/*.yaml
+      - infra/k8s/dev/deploys/*.yaml
 build:
   local:
     push: false

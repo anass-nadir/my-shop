@@ -20,16 +20,3 @@ spec:
             - secretRef:
                 name: cart.env
       restartPolicy: Always
----
-apiVersion: v1
-kind: Service
-metadata:
-  name: cart-service
-spec:
-  selector:
-    app: cart
-  ports:
-    - name: cart
-      protocol: TCP
-      port: 3000
-      targetPort: 3000

@@ -24,7 +24,7 @@ app.use(
   })
 );
 const sessOptions = {
-  name: 'my-shop-sess',
+  name: process.env.SESSION_NAME,
   secret: process.env.SESSION_SECRET,
   signed: false,
   secure: process.env.NODE_ENV !== 'test',
@@ -33,8 +33,7 @@ const sessOptions = {
 app.set('trust proxy', 1);
 
 app.use(session(sessOptions));
-app.use(currentUser);
-app.use(isAuthenticated);
+app.use([currentUser, isAuthenticated]);
 
 app.use('/api/cart', Routes);
 

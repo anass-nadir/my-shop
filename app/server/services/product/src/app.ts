@@ -2,11 +2,7 @@ import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
 import session from 'cookie-session';
-import {
-  errorHandler,
-  NotFoundError,
-  currentUser
-} from '@anass-nadir/my-shop-common';
+import { errorHandler, NotFoundError } from '@anass-nadir/my-shop-common';
 import { privateRoutes, publicRoutes } from './routes';
 
 const app = express();
@@ -23,7 +19,7 @@ app.use(
   })
 );
 const sessOptions = {
-  name: 'my-shop-sess',
+  name: process.env.SESSION_NAME,
   secret: process.env.SESSION_SECRET,
   signed: false,
   secure: process.env.NODE_ENV !== 'test',
@@ -32,7 +28,6 @@ const sessOptions = {
 app.set('trust proxy', 1);
 
 app.use(session(sessOptions));
-app.use(currentUser);
 
 app.use('/api/products', [publicRoutes, privateRoutes]);
 

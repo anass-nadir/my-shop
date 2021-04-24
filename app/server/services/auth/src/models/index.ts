@@ -1,26 +1,14 @@
+import { IUserSchema } from 'IUser';
 import { Schema, Document, Model, model } from 'mongoose';
 
 import { PasswordService } from '../services/password';
 
-interface IUser {
-  name: string;
-  email: string;
-  phone: string;
-  gender?: string;
-  address: [];
-  town: string;
-  country: string;
-  password: string;
-  googleId?: string;
-  stripeId?: string;
-}
-
-interface UserDoc extends IUser, Document {
+interface UserDoc extends IUserSchema, Document {
   comparePassword(password: string): Promise<boolean>;
 }
 
 interface UserModel extends Model<UserDoc> {
-  build(attrs: IUser): UserDoc;
+  build(attrs: IUserSchema): UserDoc;
 }
 
 const userSchema = new Schema(
@@ -58,7 +46,7 @@ userSchema.pre('save', PasswordService.hash);
 userSchema.methods.comparePassword = PasswordService.compare;
 userSchema.indexes();
 
-userSchema.statics.build = (attrs: IUser) => {
+userSchema.statics.build = attrs => {
   return new User(attrs);
 };
 

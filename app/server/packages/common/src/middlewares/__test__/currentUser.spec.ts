@@ -1,7 +1,8 @@
 import { Request, Response } from 'express';
-import jwt from 'jsonwebtoken';
+import { IUserJwtPayload } from 'IUser';
 
 import { currentUser } from '../';
+import { signTestUser } from '../../helpers';
 
 jest.setTimeout(2000);
 describe('currentUser from session middleware', () => {
@@ -16,15 +17,18 @@ describe('currentUser from session middleware', () => {
   });
 
   it('catches expired tokens', async () => {
-    const User = {
-      _id: 'adadad',
-      name: 'test',
-      email: 'test@test.com'
-    };
-    const userJwt = jwt.sign(User, process.env.JWT_SECRET!, { expiresIn: 1 });
+    const userJwt = signTestUser(
+      process.env.JWT_SECRET!,
+      '',
+      {
+        expiresIn: 1
+      },
+      false
+    ) as { payload: IUserJwtPayload; token: string };
+
     global.mockRequest = {
       session: {
-        jwt: userJwt
+        jwt: userJwt.token
       }
     };
     currentUser(
@@ -34,7 +38,7 @@ describe('currentUser from session middleware', () => {
     );
     expect(global.nextFunction).toBeCalledTimes(1);
     expect(global.mockRequest.currentUser).toEqual(
-      expect.objectContaining(User)
+      expect.objectContaining(userJwt.payload)
     );
 
     await new Promise(res =>
@@ -45,22 +49,24 @@ describe('currentUser from session middleware', () => {
           global.nextFunction
         );
         res(true);
-      }, 2000)
+      }, 1200)
     );
     expect(global.nextFunction).toBeCalledTimes(2);
     expect(global.mockRequest.currentUser).toBeUndefined();
   });
 
   it('should pass with the current user object', () => {
-    const User = {
-      _id: 'adadad',
-      name: 'test',
-      email: 'test@test.com'
-    };
-    const userJwt = jwt.sign(User, process.env.JWT_SECRET!, { expiresIn: 1 });
+    const userJwt = signTestUser(
+      process.env.JWT_SECRET!,
+      '',
+      {
+        expiresIn: 10
+      },
+      false
+    ) as { payload: IUserJwtPayload; token: string };
     global.mockRequest = {
       session: {
-        jwt: userJwt
+        jwt: userJwt.token
       }
     };
     currentUser(
@@ -71,7 +77,7 @@ describe('currentUser from session middleware', () => {
 
     expect(global.nextFunction).toBeCalledTimes(1);
     expect(global.mockRequest.currentUser).toEqual(
-      expect.objectContaining(User)
+      expect.objectContaining(userJwt.payload)
     );
   });
 });

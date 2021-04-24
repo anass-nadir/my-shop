@@ -1,14 +1,15 @@
 /* eslint-disable no-undef */
 /* eslint-disable import/no-extraneous-dependencies */
+import { IUserTestPayload } from 'IUser';
 import { MongoMemoryServer } from 'mongodb-memory-server';
 import { connect, connection } from 'mongoose';
-import { agent as request } from 'supertest';
+import { agent as request, Test } from 'supertest';
 import { app } from '../app';
 
 declare global {
   namespace NodeJS {
     interface Global {
-      registerUser(): Promise<string[]>;
+      registerUser(data?: IUserTestPayload): Test;
     }
   }
 }
@@ -39,10 +40,10 @@ afterAll(async () => {
   await connection.close();
 });
 
-global.registerUser = async () => {
-  const response = await request(app)
-    .post('/api/auth/register')
-    .send({
+global.registerUser = data => {
+  const userData = Object.assign(
+    {},
+    {
       name: 'test',
       email: 'test@test.com',
       phone: '+212644444444',
@@ -52,8 +53,8 @@ global.registerUser = async () => {
       country: 'xxxx',
       password: 'password',
       confirmPassword: 'password'
-    })
-    .expect(201);
-
-  return response.get('Set-Cookie');
+    },
+    data
+  );
+  return request(app).post('/api/auth/register').send(userData);
 };
