@@ -25,12 +25,10 @@ const pay = async (req: Request, res: Response): Promise<Response> => {
     if (!charge) throw new Error('charge unsuccessful');
 
     return res.status(200).json({
-      success: true,
       message: `charge of ${amount} usd posted successfully`
     });
   } catch (error) {
     return res.status(500).json({
-      success: false,
       message: error.message
     });
   }

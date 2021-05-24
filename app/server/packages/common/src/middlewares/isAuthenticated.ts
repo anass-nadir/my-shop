@@ -1,16 +1,28 @@
 import { Request, Response, NextFunction } from 'express';
-import { NotAuthorizedError } from '../errors';
+import { BadRequestError, NotAuthorizedError } from '../errors';
+import jwt, { TokenExpiredError } from 'jsonwebtoken';
+import { IUserJwtPayload } from 'IUser';
 
 export const isAuthenticated = (
   req: Request,
   res: Response,
   next: NextFunction
-): any => {
-  if (!req.currentUser) {
-    if (process.env.NODE_ENV !== 'test') throw new NotAuthorizedError();
+): void | Response => {
+  if (req.session?.jwt) {
+    try {
+      const user = jwt.verify(
+        req.session.jwt,
+        process.env.JWT_SECRET!
+      ) as IUserJwtPayload;
 
-    return res.status(401).json({ message: 'sorry, authentication required' });
+      req.currentUser = user;
+      return next();
+    } catch (err) {
+      process.env.NODE_ENV !== 'test' && console.error(err);
+      req.currentUser = undefined;
+      if (err instanceof TokenExpiredError)
+        throw new BadRequestError(err.message);
+    }
   }
-
-  next();
+  throw new NotAuthorizedError();
 };

@@ -4,9 +4,8 @@ module.exports = {
   testMatch: ['**/__test__/*.spec.(ts|tsx)'],
   testEnvironment: 'node',
   collectCoverage: true,
-  coveragePathIgnorePatterns: [
-    '<rootDir>/build/',
-    'node_modules'
+  collectCoverageFrom: [
+    "**/*.{ts,tsx}"
   ],
   coverageDirectory: '<rootDir>/coverage/',
   verbose: true

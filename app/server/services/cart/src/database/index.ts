@@ -1,17 +1,14 @@
 import { connect } from 'mongoose';
-const {
-  MONGO_USERNAME,
-  MONGO_PASSWORD,
-  MONGO_HOSTNAME,
-  MONGO_PORT,
-  MONGO_DB
-} = process.env;
+const { MONGO_USERNAME, MONGO_PASSWORD, MONGO_URIS, MONGO_DB } = process.env;
 
-const url = `mongodb://${MONGO_USERNAME}:${MONGO_PASSWORD}@${MONGO_HOSTNAME}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
-export default connect(url, {
-  useNewUrlParser: true,
+export default connect(`mongodb://${MONGO_URIS}`, {
+  dbName: MONGO_DB,
+  auth: {
+    user: MONGO_USERNAME!,
+    password: MONGO_PASSWORD!
+  },
   useUnifiedTopology: true,
   useCreateIndex: true,
   useFindAndModify: false,
-  connectTimeoutMS: 10000
+  useNewUrlParser: true
 });

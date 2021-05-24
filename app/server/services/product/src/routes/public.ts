@@ -1,9 +1,9 @@
 import { Router } from 'express';
-import { getCategories, getInventory } from '../controllers';
+import { categoryController, productController } from '../controllers';
 
 const router = Router();
 
-router.get('/', getInventory);
-router.get('/categories', getCategories);
+router.get('/', productController.index);
+router.get('/categories', categoryController.index);
 
 export { router as publicRoutes };

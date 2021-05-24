@@ -1,10 +1,15 @@
 import { IProductSchema } from 'IProduct';
 import { Schema, Document, Model, model } from 'mongoose';
+import { productStatics } from '../utils/schemasStatics';
 
 export interface ProductDoc extends IProductSchema, Document {}
 
-interface ProductModel extends Model<ProductDoc> {
-  build(attrs: IProductSchema): ProductDoc;
+export interface ProductModel extends Model<ProductDoc> {
+  build(attrs: IProductSchema): Promise<ProductDoc>;
+}
+enum productStates {
+  'activated' = 1,
+  'deactivated' = 0
 }
 
 const productSchema = new Schema(
@@ -13,26 +18,43 @@ const productSchema = new Schema(
       type: String,
       required: true
     },
-    description: {
-      type: String
-    },
+    description: String,
     price: {
       type: Number,
       required: true
     },
-    imageUrl: {
-      type: String,
-      required: true
-    },
+    imagesUrls: [String],
     quantity: {
       type: Number,
-      required: true
+      validate: {
+        validator: function (this: ProductDoc, value: number) {
+          return !this.reserved || value >= this.reserved;
+        },
+        message: ({ value }) => `Insufficient ${value}!`
+      },
+      default: 0
+    },
+    reserved: {
+      type: Number,
+      validate: {
+        validator: function (this: ProductDoc, value: number) {
+          return value <= this.quantity;
+        },
+        message: ({ value }) => `Insufficient ${value}!`
+      },
+      default: 0
     },
     details: {
       type: []
+    },
+    state: {
+      type: Number,
+      default: 1,
+      enum: Object.values(productStates)
     }
   },
   {
+    timestamps: { currentTime: () => Date.now() },
     toJSON: {
       transform(doc, product) {
         delete product.__v;
@@ -40,9 +62,9 @@ const productSchema = new Schema(
     }
   }
 );
-productSchema.statics.build = attrs => {
-  return new Product(attrs);
-};
-const Product = model<ProductDoc, ProductModel>('Product', productSchema);
+productSchema.statics = productStatics;
 
-export { Product };
+export const Product = model<ProductDoc, ProductModel>(
+  'Product',
+  productSchema
+);

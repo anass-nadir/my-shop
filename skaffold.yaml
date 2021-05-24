@@ -9,13 +9,14 @@ deploy:
 build:
   local:
     push: false
+    concurrency: 0
   tagPolicy:
     sha256: {}
   artifacts:
     - image: myshop/auth
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: auth
       sync:
@@ -26,7 +27,7 @@ build:
     - image: myshop/cart
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: cart
       sync:
@@ -37,7 +38,7 @@ build:
     - image: myshop/product
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: product
       sync:
@@ -49,7 +50,7 @@ build:
     - image: myshop/payment
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: payment
       sync:
@@ -59,14 +60,11 @@ build:
           - '**/*.map'
 
     - image: myshop/client
-      context: app/client
+      context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Client.dev
       sync:
-        manual:
-          - src: 'src/**/*.js'
-            dest: .
-          - src: 'src/**/*.jsx'
-            dest: .
-          - src: 'src/**/*.scss'
-            dest: .
+        infer:
+          - '**/*.ts'
+          - '**/*.tsx'
+          - '**/*.scss'

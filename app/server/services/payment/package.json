@@ -8,9 +8,6 @@
   "workspaces": [
     "packages/*"
   ],
-  "files": [
-    "build/**/*"
-  ],
   "repository": {
     "type": "git",
     "url": "https://github.com/anassNadir/my-shop.git",
@@ -29,6 +26,7 @@
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
+    "helmet": "^4.5.0",
     "mongoose": "^5.12.2",
     "stripe": "^8.139.0"
   },

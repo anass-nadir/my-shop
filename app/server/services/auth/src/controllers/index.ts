@@ -1,6 +1,7 @@
 import { Request, Response } from 'express';
-import { signUser, BadRequestError } from '@anass-nadir/my-shop-common';
+import { BadRequestError } from '@anass-nadir/my-shop-common';
 import User from '../models';
+import { generateUserJwt } from '../utils';
 
 const loginUser = async (req: Request, res: Response): Promise<Response> => {
   const { email, password } = req.body;
@@ -16,20 +17,11 @@ const loginUser = async (req: Request, res: Response): Promise<Response> => {
     throw new BadRequestError('Invalid credentials');
   }
 
-  const userJwt = signUser(
-    {
-      _id: user._id,
-      name: user.name,
-      email: user.email
-    },
-    process.env.JWT_SECRET!,
-    { expiresIn: 60 * 60 * 24 * 1000 }
-  );
+  const userJwt = await generateUserJwt(user._id);
   req.session = {
     jwt: userJwt
   };
   return res.status(200).json({
-    success: true,
     user
   });
 };
@@ -61,43 +53,30 @@ const createUser = async (req: Request, res: Response): Promise<Response> => {
   });
 
   await user.save();
+  const userJwt = await generateUserJwt(user._id);
 
-  const userJwt = signUser(
-    {
-      _id: user._id,
-      name: user.name,
-      email: user.email
-    },
-    process.env.JWT_SECRET!,
-    { expiresIn: 60 * 60 * 24 * 1000 }
-  );
   req.session = {
     jwt: userJwt
   };
   return res.status(201).json({
-    success: true,
-    user,
-    message: 'User created!'
+    user
   });
 };
 const logoutUser = (req: Request, res: Response): Response => {
   req.session = null;
   res.clearCookie(process.env.SESSION_NAME!, { path: '/' });
-  return res.status(200).json({
-    success: true
-  });
+  return res.sendStatus(204);
 };
 const authenticatedUser = async (
   req: Request,
   res: Response
 ): Promise<Response> => {
-  const user = await User.findById(req.currentUser?._id);
+  const user = await User.findById(req.currentUser?.key);
   if (!user) {
     throw new BadRequestError('User not found');
   }
   return res.status(200).json({
-    user: user,
-    success: true
+    user
   });
 };
 export { loginUser, createUser, logoutUser, authenticatedUser };

@@ -1,6 +1,14 @@
+import { checkEnvVars } from '@anass-nadir/my-shop-common';
 import { app } from './app';
 import connectDb from './database';
 
+const missingEnvVars = checkEnvVars();
+
+if (missingEnvVars.length) {
+  throw new Error(
+    `Cannot find these required environment variables [${missingEnvVars}]`
+  );
+}
 connectDb
   .then(() => {
     console.info('MongoDB connected');

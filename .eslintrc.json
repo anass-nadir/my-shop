@@ -5,13 +5,17 @@
     "es2020": true,
     "node": true
   },
-  "extends": ["plugin:@typescript-eslint/recommended", "prettier"],
+  "extends": [
+    "plugin:@typescript-eslint/recommended",
+    "prettier",
+    "plugin:security/recommended"
+  ],
   "parser": "@typescript-eslint/parser",
   "parserOptions": {
     "sourceType": "module",
     "ecmaVersion": 11
   },
-  "plugins": ["@typescript-eslint", "import"],
+  "plugins": ["@typescript-eslint", "import", "security"],
   "rules": {
     // disallow non-import statements appearing before import statements
     "import/first": "error",
@@ -56,31 +60,6 @@
         "jest/no-identical-title": "off",
         "import/first": "off"
       }
-    },
-    {
-      "files": ["*.tsx", "*.jsx"],
-      "parserOptions": {
-        "ecmaFeatures": {
-          "jsx": true
-        }
-      },
-      "plugins": ["react"],
-      "settings": {
-        "react": {
-          "version": "detect",
-          "flowVersion": "0.53"
-        },
-        "linkComponents": [
-          // Components used as alternatives to <a> for linking, eg. <Link to={ url } />
-          "Hyperlink",
-          {
-            "name": "Link",
-            "linkAttribute": "to"
-          }
-        ]
-      },
-      "extends": ["plugin:react/recommended"],
-      "rules": {}
     }
   ]
 }
