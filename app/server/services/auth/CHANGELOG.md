@@ -3,6 +3,12 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [0.1.1-alpha.1](https://github.com/anassNadir/my-shop/compare/@my-shop/auth-service@0.1.1-alpha.0...@my-shop/auth-service@0.1.1-alpha.1) (2021-05-24)
+
+### Performance Improvements
+
+- created a cli with code improvments ([0c88aa2](https://github.com/anassNadir/my-shop/commit/0c88aa2f24bf45aba2a8d6d1c81df874bf1b499d))
+
 ### [0.1.1-alpha.0](https://github.com/anassNadir/my-shop/compare/@my-shop/auth-service@0.1.0-alpha.0...@my-shop/auth-service@0.1.1-alpha.0) (2021-04-24)
 
 ### Performance Improvements

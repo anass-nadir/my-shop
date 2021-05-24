@@ -1,6 +1,6 @@
 {
   "name": "@my-shop/auth-service",
-  "version": "0.1.1-alpha.0",
+  "version": "0.1.1-alpha.1",
   "main": "build/index.js",
   "private": true,
   "description": "my shop's auth service",
@@ -22,7 +22,7 @@
     "clean": "rm -rf ./build && rm -f tsconfig.*.tsbuildinfo"
   },
   "dependencies": {
-    "@anass-nadir/my-shop-common": "0.2.0-alpha.0",
+    "@anass-nadir/my-shop-common": "0.2.0-alpha.1",
     "bcryptjs": "^2.4.3",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
