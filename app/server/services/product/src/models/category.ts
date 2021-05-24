@@ -1,10 +1,11 @@
-import { ICategorySchema } from 'ICategory';
+import { ICategorySchema } from 'IProduct';
 import { Schema, Document, Model, model } from 'mongoose';
+import { categoryStatics } from '../utils/schemasStatics';
 
 export interface CategoryDoc extends ICategorySchema, Document {}
 
-interface CategoryModel extends Model<CategoryDoc> {
-  build(attrs: ICategorySchema): CategoryDoc;
+export interface CategoryModel extends Model<CategoryDoc> {
+  build(attrs: ICategorySchema): Promise<CategoryDoc>;
 }
 
 const categorySchema = new Schema(
@@ -22,10 +23,7 @@ const categorySchema = new Schema(
       trim: true,
       required: true
     },
-    imageUrl: {
-      type: String,
-      required: true
-    }
+    imagesUrls: [String]
   },
   {
     toJSON: {
@@ -35,9 +33,10 @@ const categorySchema = new Schema(
     }
   }
 );
-categorySchema.statics.build = attrs => {
-  return new Category(attrs);
-};
-const Category = model<CategoryDoc, CategoryModel>('Category', categorySchema);
 
-export { Category };
+categorySchema.statics = categoryStatics;
+
+export const Category = model<CategoryDoc, CategoryModel>(
+  'Category',
+  categorySchema
+);

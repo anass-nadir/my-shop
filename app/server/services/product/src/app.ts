@@ -1,6 +1,7 @@
 import express from 'express';
 import 'express-async-errors';
 import cors from 'cors';
+import helmet from 'helmet';
 import session from 'cookie-session';
 import { errorHandler, NotFoundError } from '@anass-nadir/my-shop-common';
 import { privateRoutes, publicRoutes } from './routes';
@@ -9,7 +10,7 @@ const app = express();
 
 app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
-
+app.use(helmet());
 app.use(
   cors({
     origin: process.env.PUBLIC_URL,

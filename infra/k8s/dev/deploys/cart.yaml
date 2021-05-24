@@ -19,4 +19,6 @@ spec:
           envFrom:
             - secretRef:
                 name: cart.env
+            - secretRef:
+                name: jwt-keys
       restartPolicy: Always

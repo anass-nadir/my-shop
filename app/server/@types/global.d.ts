@@ -1,7 +1,8 @@
+/// <reference types="node" />
 import { IUserJwtPayload } from 'IUser';
 declare global {
-  export namespace Express {
-    export interface Request {
+  namespace Express {
+    interface Request {
       currentUser?: IUserJwtPayload;
     }
   }

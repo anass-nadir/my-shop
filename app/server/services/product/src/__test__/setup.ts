@@ -6,19 +6,22 @@ import { agent as request, Test } from 'supertest';
 import { signTestUser } from '@anass-nadir/my-shop-common';
 import { app } from '../app';
 
-import { IUserJwtPayload } from 'IUser';
-import { ICategorySchema } from 'ICategory';
-import { IProductTestPayload } from 'IProduct';
+import type { IUserJwtPayload } from 'IUser';
+import { IProductTestPayload, ICategoryPayload } from 'IProduct';
 
 declare global {
   namespace NodeJS {
     interface Global {
       addCategory(
         cookie: [string] | { payload: IUserJwtPayload; token: string },
-        data?: ICategorySchema
+        data?: ICategoryPayload
       ): Test;
-      signIn(): [string] | { payload: IUserJwtPayload; token: string };
+      signIn(): Promise<[string] | { payload: IUserJwtPayload; token: string }>;
       addProduct(
+        cookie: [string] | { payload: IUserJwtPayload; token: string },
+        data?: IProductTestPayload
+      ): Test;
+      attachProductCategory(
         cookie: [string] | { payload: IUserJwtPayload; token: string },
         data?: IProductTestPayload
       ): Test;
@@ -52,21 +55,24 @@ afterAll(async () => {
   await connection.close();
 });
 
-global.signIn = () => {
-  return signTestUser(process.env.JWT_SECRET!, process.env.SESSION_NAME!, {
-    expiresIn: 10
-  });
-};
+global.signIn = () =>
+  signTestUser(
+    process.env.JWT_SECRET!,
+    {},
+    {
+      expiresIn: 10
+    },
+    process.env.SESSION_NAME!
+  );
 global.addProduct = (cookie, data) => {
   const productData = Object.assign(
     {},
     {
-      categoryId: new Types.ObjectId().toHexString(),
       name: 'test',
       description: 'test',
       price: 400,
       quantity: 10,
-      imageUrl: 'https://test.jpg',
+      imagesUrls: ['https://test.jpg'],
       details: [{ color: 'red' }, { size: 's' }]
     },
     data
@@ -82,12 +88,26 @@ global.addCategory = (cookie, data) => {
     {
       title: 'test',
       slug: 'test',
-      imageUrl: 'https://test.jpg'
+      imagesUrls: ['https://test.jpg']
     },
     data
   );
   return request(app)
-    .post('/api/products/create-category')
+    .post('/api/products/category/create')
     .set('Cookie', cookie as [string])
     .send(categoryData);
+};
+global.attachProductCategory = (cookie, data) => {
+  const payload = Object.assign(
+    {},
+    {
+      _productIds: [new Types.ObjectId().toHexString()],
+      _category: new Types.ObjectId().toHexString()
+    },
+    data
+  );
+  return request(app)
+    .post('/api/products/with-category')
+    .set('Cookie', cookie as [string])
+    .send(payload);
 };

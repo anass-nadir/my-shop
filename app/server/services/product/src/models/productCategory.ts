@@ -1,14 +1,27 @@
-import { Schema, Document, Model, model, Types } from 'mongoose';
+import type {
+  IProductCategoryAttachPayload,
+  IProductCategorySchema
+} from 'IProduct';
+import {
+  Schema,
+  Document,
+  Model,
+  model,
+  ObjectId,
+  UpdateWriteOpResult
+} from 'mongoose';
+import type { FindAndModifyWriteOpResultObject } from 'mongodb';
 
-interface IProductCategory {
-  category: Types.ObjectId;
-  products: [Types.ObjectId];
-}
-interface ProductCategoryDoc extends IProductCategory, Document {}
+import { productCategoryStatics } from '../utils/schemasStatics';
 
-interface ProductCategoryModel extends Model<ProductCategoryDoc> {
-  build(attrs: IProductCategory): ProductCategoryDoc;
-  pushProduct(attrs: IProductCategory): Promise<ProductCategoryDoc>;
+export interface ProductCategoryDoc extends IProductCategorySchema, Document {}
+
+export interface ProductCategoryModel extends Model<ProductCategoryDoc> {
+  build(attrs: IProductCategorySchema): Promise<ProductCategoryDoc>;
+  attachProducts(
+    attrs: IProductCategoryAttachPayload
+  ): Promise<FindAndModifyWriteOpResultObject<ProductCategoryDoc>>;
+  detachProduct(id: ObjectId): Promise<UpdateWriteOpResult>;
 }
 
 const productCategorySchema = new Schema(
@@ -25,24 +38,9 @@ const productCategorySchema = new Schema(
     }
   }
 );
-productCategorySchema.statics.build = (attrs: IProductCategory) => {
-  return new ProductCategory(attrs);
-};
-productCategorySchema.statics.pushProduct = async attrs => {
-  return await ProductCategory.findOneAndUpdate(
-    { category: attrs.category },
-    { $push: { products: attrs.products } },
-    {
-      new: true,
-      upsert: true,
-      rawResult: true
-    }
-  );
-};
+productCategorySchema.statics = productCategoryStatics;
 
-const ProductCategory = model<ProductCategoryDoc, ProductCategoryModel>(
+export const ProductCategory = model<ProductCategoryDoc, ProductCategoryModel>(
   'ProductCategory',
   productCategorySchema
 );
-
-export { ProductCategory };

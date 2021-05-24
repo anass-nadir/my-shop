@@ -1,7 +1,7 @@
 import { IUserSchema } from 'IUser';
 import { Schema, Document, Model, model } from 'mongoose';
 
-import { PasswordService } from '../services/password';
+import { PasswordUtil } from '../utils';
 
 interface UserDoc extends IUserSchema, Document {
   comparePassword(password: string): Promise<boolean>;
@@ -42,13 +42,11 @@ const userSchema = new Schema(
     }
   }
 );
-userSchema.pre('save', PasswordService.hash);
-userSchema.methods.comparePassword = PasswordService.compare;
+userSchema.pre('save', PasswordUtil.hash);
+userSchema.methods.comparePassword = PasswordUtil.compare;
 userSchema.indexes();
 
-userSchema.statics.build = attrs => {
-  return new User(attrs);
-};
+userSchema.statics.build = attrs => new User(attrs);
 
 const User = model<UserDoc, UserModel>('User', userSchema);
 
