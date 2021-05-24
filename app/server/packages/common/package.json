@@ -1,37 +1,32 @@
 {
   "name": "@anass-nadir/my-shop-common",
-  "version": "0.1.0",
+  "version": "0.2.0-alpha.1",
   "description": "my shop's common code",
   "main": "./build/index.js",
   "types": "./build/@declarations/index.d.ts",
-  "publishConfig": {
-    "registry": "https://npm.pkg.github.com",
-    "access": "public"
-  },
+  "private": true,
   "repository": {
     "type": "git",
     "url": "https://github.com/anass-nadir/my-shop.git",
     "directory": "app/server/packages/common"
   },
-  "files": [
-    "build/**/*"
-  ],
   "scripts": {
-    "build": "tsc -b tsconfig.build.json",
-    "clean": "tsc -b tsconfig.build.json --clean",
-    "watch": "tsc -b tsconfig.build.json --watch --preserveWatchOutput",
+    "build": "tsc -b ./tsconfig.build.json",
+    "clean": "rm -rf ./build && rm -f tsconfig.*.tsbuildinfo",
+    "watch": "tsc -b ./tsconfig.build.json --watch --preserveWatchOutput",
+    "test": "echo \"Error: run tests from root\" && exit 1",
     "get:version": "node -p 'require(\"./package.json\").version'"
   },
   "license": "MIT",
   "dependencies": {
+    "@types/cookie-session": "^2.0.42",
+    "@types/express": "^4.17.11",
+    "@types/jsonwebtoken": "^8.5.0",
+    "@types/mongoose": "^5.10.4",
+    "@types/node": "^15.0.2",
     "cookie-session": "^1.4.0",
     "express": "^4.17.1",
     "express-validator": "^6.4.0",
     "jsonwebtoken": "^8.5.1"
-  },
-  "devDependencies": {
-    "@types/cookie-session": "^2.0.42",
-    "@types/express": "^4.17.11",
-    "@types/jsonwebtoken": "^8.5.0"
   }
 }

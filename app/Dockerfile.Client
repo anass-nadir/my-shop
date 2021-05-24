@@ -1,0 +1,24 @@
+FROM node:15-alpine as build
+
+WORKDIR /usr/src/app
+
+RUN chown -R node:node /usr/src/app 
+
+USER node
+
+COPY --chown=node:node client/package.json ./package.json
+
+RUN yarn install --production --silent
+
+COPY --chown=node:node client/public ./public/
+COPY --chown=node:node client/src ./src/
+COPY --chown=node:node tsconfig.Client.json ./tsconfig.json
+RUN GENERATE_SOURCEMAP=false yarn build
+
+
+FROM nginx:latest
+
+COPY --from=build /usr/src/app/build /var/www/html
+COPY client/nginx/ /etc/nginx/conf.d/
+
+CMD ["nginx", "-g", "daemon off;"]

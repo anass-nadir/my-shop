@@ -3,5 +3,8 @@
   "env": {
     "NODE_ENV": "development"
   },
-  "watch": ["./build/index.js"]
+  "ext": "ts",
+  "ignore": ["**/@declarations/**", "**/build/**/*.map"],
+  "watch": ["src/**/*.ts", "**/build/index.js"],
+  "exec": "ts-node --transpile-only --project ./tsconfig.build.json src/index.ts"
 }

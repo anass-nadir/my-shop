@@ -26,7 +26,7 @@ commands:
     steps:
       - run:
           name: Build packages
-          command: yarn build-packages
+          command: yarn build:changed
   test:
     steps:
       - run:

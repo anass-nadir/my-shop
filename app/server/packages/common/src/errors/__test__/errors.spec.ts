@@ -31,7 +31,7 @@ describe('Custom Errors Specs', () => {
       expect(err.message).toEqual('Not Authorized');
     }
   });
-  test('not authorized error', () => {
+  test('not found error', () => {
     try {
       throw new NotFoundError();
     } catch (err) {

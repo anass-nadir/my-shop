@@ -1,44 +1,46 @@
-import { Schema, Document, Model, model } from 'mongoose';
-import { ProductDoc } from './product';
+import type {
+  IProductCategoryAttachPayload,
+  IProductCategorySchema
+} from 'IProduct';
+import {
+  Schema,
+  Document,
+  Model,
+  model,
+  ObjectId,
+  UpdateWriteOpResult
+} from 'mongoose';
+import type { FindAndModifyWriteOpResultObject } from 'mongodb';
 
-interface ProductCategoryDoc extends Document {
-  title: string;
-  products: [ProductDoc['_id']];
-  imageUrl: string;
+import { productCategoryStatics } from '../utils/schemasStatics';
+
+export interface ProductCategoryDoc extends IProductCategorySchema, Document {}
+
+export interface ProductCategoryModel extends Model<ProductCategoryDoc> {
+  build(attrs: IProductCategorySchema): Promise<ProductCategoryDoc>;
+  attachProducts(
+    attrs: IProductCategoryAttachPayload
+  ): Promise<FindAndModifyWriteOpResultObject<ProductCategoryDoc>>;
+  detachProduct(id: ObjectId): Promise<UpdateWriteOpResult>;
 }
 
-interface ProductCategoryModel extends Model<ProductCategoryDoc> {
-  build(attrs: ProductCategoryDoc): ProductCategoryDoc;
-}
-
-const ProductCategorySchema = new Schema(
+const productCategorySchema = new Schema(
   {
-    title: {
-      type: String,
-      required: true,
-      unique: true,
-      trim: true
-    },
-    imageUrl: {
-      type: String,
-      required: true
-    },
+    category: { type: Schema.Types.ObjectId, ref: 'Category' },
     products: [{ type: Schema.Types.ObjectId, ref: 'Product' }]
   },
   {
     toJSON: {
       transform(doc, product) {
+        delete product._id;
         delete product.__v;
       }
     }
   }
 );
+productCategorySchema.statics = productCategoryStatics;
 
-const ProductCategory = model<ProductCategoryDoc, ProductCategoryModel>(
+export const ProductCategory = model<ProductCategoryDoc, ProductCategoryModel>(
   'ProductCategory',
-  ProductCategorySchema
+  productCategorySchema
 );
-ProductCategorySchema.statics.build = (attrs: ProductDoc) => {
-  return new ProductCategory(attrs);
-};
-export { ProductCategory };

@@ -52,6 +52,12 @@ spec:
           volumeMounts:
             - name: auth-pvc
               mountPath: /data/db
+            - name: user-initdb
+              mountPath: /docker-entrypoint-initdb.d
+      volumes:
+        - name: user-initdb
+          configMap:
+            name: user-initdb
   volumeClaimTemplates:
     - metadata:
         name: auth-pvc

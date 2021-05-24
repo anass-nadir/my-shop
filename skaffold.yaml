@@ -5,73 +5,66 @@ metadata:
 deploy:
   kubectl:
     manifests:
-      - infra/k8s/dev/*.yaml
+      - infra/k8s/dev/deploys/*.yaml
 build:
   local:
     push: false
-    # useBuildkit: true
+    concurrency: 0
   tagPolicy:
     sha256: {}
   artifacts:
     - image: myshop/auth
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: auth
       sync:
         infer:
-          - 'server/services/auth/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/auth/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
     - image: myshop/cart
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: cart
       sync:
         infer:
-          - 'server/services/cart/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/cart/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
     - image: myshop/product
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: product
       sync:
         infer:
-          - 'server/services/product/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/product/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
 
     - image: myshop/payment
       context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Server.dev
         buildArgs:
           Service: payment
       sync:
         infer:
-          - 'server/services/payment/src/**/*.ts'
-          - 'server/packages/**/src/**/*.ts'
-          - 'server/services/payment/src/*.ts'
-          - 'server/packages/**/src/*.ts'
+          - '**/*.ts'
+          - '**/*.js'
+          - '**/*.map'
 
     - image: myshop/client
-      context: app/client
+      context: app
       docker:
-        dockerfile: Dockerfile.dev
+        dockerfile: Dockerfile.Client.dev
       sync:
-        manual:
-          - src: 'src/**/*.js'
-            dest: .
-          - src: 'src/**/*.jsx'
-            dest: .
-          - src: 'src/**/*.scss'
-            dest: .
+        infer:
+          - '**/*.ts'
+          - '**/*.tsx'
+          - '**/*.scss'
