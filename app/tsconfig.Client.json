@@ -1,0 +1,26 @@
+{
+  "compilerOptions": {
+    "module": "ESNext",
+    "moduleResolution": "Node",
+    "lib": ["ES2019", "DOM", "DOM.Iterable", "ESNext"],
+    "target": "ES2019",
+    "strict": true,
+    "noEmitOnError": true,
+    "noImplicitAny": false,
+    "forceConsistentCasingInFileNames": true,
+    "esModuleInterop": true,
+    "isolatedModules": true,
+    "sourceMap": true,
+    "skipLibCheck": true,
+    "allowSyntheticDefaultImports": true,
+    "noFallthroughCasesInSwitch": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "outDir": "./build",
+    "jsx": "react-jsx",
+    "allowJs": true,
+    "rootDir": "./src"
+  },
+  "exclude": ["**/test/**", "**/__test__/**"],
+  "include": ["./src"]
+}
