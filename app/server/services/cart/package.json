@@ -1,6 +1,6 @@
 {
   "name": "@my-shop/cart-service",
-  "version": "0.1.1",
+  "version": "0.1.1-alpha.1",
   "private": true,
   "main": "build/index.js",
   "description": "my shop's cart service",
@@ -22,7 +22,7 @@
     "clean": "rm -rf ./build && rm -f tsconfig.*.tsbuildinfo"
   },
   "dependencies": {
-    "@anass-nadir/my-shop-common": "0.2.0",
+    "@anass-nadir/my-shop-common": "0.2.0-alpha.1",
     "cookie-session": "^1.4.0",
     "cors": "^2.8.5",
     "express": "^4.17.1",
