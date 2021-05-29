@@ -38,7 +38,7 @@ commands:
           key: v1-my-shop-{{ arch }}-npm-lock-{{ .Branch }}-{{ .Environment.CIRCLE_JOB }}-{{ checksum "yarn.lock" }}
           paths:
             - node_modules
-  run-all:
+  run-build-n-test:
     steps:
       - checkout
       - restore_cache:
@@ -51,48 +51,48 @@ commands:
       - build-packages
       - test
 jobs:
-  node12:
+  test-node12:
     docker:
       - image: node:12
     steps:
-      - run-all
-  node14:
+      - run-build-n-test
+  test-node14:
     docker:
       - image: node:14
     steps:
-      - run-all
-  node15:
+      - run-build-n-test
+  test-node15:
     docker:
       - image: node:15
     steps:
-      - run-all
-  windows:
+      - run-build-n-test
+  test-windows:
     executor: win/default
     steps:
-      - run-all
+      - run-build-n-test
 
 workflows:
-  node:
+  Build-Test:
     jobs:
-      - node12:
+      - test-node12:
           filters:
             branches:
               ignore:
                 - master
                 - prerelease
-      - node14:
+      - test-node14:
           filters:
             branches:
               ignore:
                 - master
                 - prerelease
-      - node15:
+      - test-node15:
           filters:
             branches:
               ignore:
                 - master
                 - prerelease
-      - windows:
+      - test-windows:
           filters:
             branches:
               ignore:

@@ -2,7 +2,6 @@
   "extends": "../../tsconfig.json",
   "compilerOptions": {
     "module": "ESNext",
-    "lib": ["ES2019", "DOM", "DOM.Iterable", "ESNext"],
     "outDir": "./build",
     "jsx": "react-jsx",
     "allowSyntheticDefaultImports": true,
