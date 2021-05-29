@@ -28,6 +28,11 @@ jobs:
         run: yarn build:changed
       - name: Fetch tags
         run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Login to docker hub
+        run: echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
       - name: PreRelease
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
