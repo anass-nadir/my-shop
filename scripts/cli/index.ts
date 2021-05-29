@@ -1,12 +1,12 @@
 #!/usr/bin/env node
+/* eslint-disable security/detect-child-process */
+/* eslint-disable import/no-extraneous-dependencies */
 
 import yargs, { Arguments, Argv, InferredOptionTypes } from 'yargs';
+import { spawn } from 'child_process';
 import concurrently from 'concurrently';
 import deploy from './deploy';
 import buildPublish from './build';
-import { command } from 'execa';
-import { randomBytes } from 'crypto';
-import { hex } from 'chalk';
 
 export type IDev = Arguments<
   InferredOptionTypes<{
@@ -24,17 +24,16 @@ export type IDeploy = Arguments<
 
 export type IBuild = Arguments<
   InferredOptionTypes<{
-    services: { type: 'array' };
+    packages: { type: 'array' };
     scope: { type: 'string' };
     publish: { type: 'boolean' };
   }>
 >;
-export const genPrefix = (prefix: string): string =>
-  `[${hex(randomBytes(3).toString('hex'))(prefix)}]:`;
+
 const nodeVersion = process.version.match(/v(\d+)\./);
 
-if (nodeVersion && +nodeVersion[1] < 12) {
-  console.error('Node v12 or greater is required.');
+if (nodeVersion && +nodeVersion[1] < 10) {
+  console.error('Node v10 or greater is required.');
 } else {
   yargs
     .command({
@@ -49,26 +48,23 @@ if (nodeVersion && +nodeVersion[1] < 12) {
         }),
       handler: (argv: IDev) => {
         process.on('SIGINT', () => {
-          console.log('Exiting skaffold please wait!!');
-          command('skaffold delete', { stdio: 'inherit' });
+          console.log('Exiting skaffold');
+          spawn('skaffold', ['delete'], { stdio: 'inherit' });
         });
-        if (argv.watch)
-          return concurrently(
+        if (argv.watch) {
+          concurrently(
             [
-              {
-                command: 'yarn watch:common',
-                name: 'common:package:',
-                prefixColor: 'blue'
-              },
+              { command: 'yarn watch:common', name: 'common:package' },
               {
                 command: `yarn wait-on ${process.cwd()}/app/server/packages/common/build/index.js && skaffold dev`,
-                name: 'dev:',
-                prefixColor: 'green'
+                name: 'dev'
               }
             ],
             { killOthers: ['failure'], successCondition: 'first' }
           );
-        command('skaffold dev', { stdio: 'inherit' });
+          return;
+        }
+        spawn('skaffold', ['dev'], { stdio: 'inherit' });
       }
     })
     .command({
@@ -96,34 +92,30 @@ if (nodeVersion && +nodeVersion[1] < 12) {
     })
     .command({
       command: 'build [publish]',
-      describe: 'Build [publish] docker images',
+      describe: 'Build docker images',
       builder: (yargs: Argv) =>
         yargs
           .options({
-            services: {
+            packages: {
               type: 'array',
-              alias: 's',
-              defaultDescription:
-                "Latest pushed services' tags in current branch",
-              description:
-                'Array of services. supported formats: [pkg-name|full-tag]'
+              alias: 'p',
+              demandOption: true
             },
             scope: {
               type: 'string',
-              alias: 'S',
+              alias: 's',
               default: 'myshp'
             },
             publish: {
               type: 'boolean',
-              alias: 'p',
+              alias: 'P',
               describe: 'Publish to docker registry'
             }
           })
           .example(
-            '$0 build -s @my-shop/client @my-shop/client@1.2.3 [-p]',
-            'build services [publish]'
-          )
-          .example('$0 build [-p]', "build latest services' tags [publish]"),
+            '$0 build -p pkg-name1 pkg-name2 [-P]',
+            'Packages to build [publish]'
+          ),
       handler: (argv: IBuild) => buildPublish(argv)
     })
     .help()
