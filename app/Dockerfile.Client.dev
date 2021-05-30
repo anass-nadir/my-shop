@@ -2,11 +2,13 @@ FROM node:15-alpine
 
 WORKDIR /usr/src/app
 
-COPY client/package.json ./package.json
+COPY services/client/package.json ./package.json
 RUN yarn
 
-COPY client/src ./src/
-COPY client/public ./public/
+COPY services/client/public ./public/
+COPY typings/client ./src/@types
+COPY services/client/src ./src/
+
 COPY tsconfig.Client.json ./tsconfig.json
 
 CMD ["yarn", "start"]

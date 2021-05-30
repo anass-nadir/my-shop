@@ -5,8 +5,8 @@ module.exports = {
   ...base,
   roots: ['<rootDir>'],
   projects: [
-    '<rootDir>/app/server/packages/*',
-    '<rootDir>/app/server/services/*'
+    '<rootDir>/app/packages/*',
+    '<rootDir>/app/services/*'
   ]
 };
 process.env = Object.assign(process.env, {
