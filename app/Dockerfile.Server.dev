@@ -4,13 +4,13 @@ WORKDIR /usr/src/app
 
 ARG Service
 
-COPY server/services/${Service}/package.json .
-COPY server/packages/common/package.json packages/common/package.json
+COPY services/${Service}/package.json .
+COPY packages/common/package.json packages/common/package.json
 RUN yarn
 
-COPY server/services/${Service}/src src
-COPY server/@types src/@types
-COPY server/packages/common/build packages/common/build
+COPY services/${Service}/src src
+COPY typings/server src/@types
+COPY packages/common/build packages/common/build
 
 
 COPY tsconfig.Server.json ./tsconfig.build.json

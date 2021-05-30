@@ -7,9 +7,8 @@
     "url": "https://github.com/anassNadir/my-shop.git"
   },
   "workspaces": [
-    "app/client/",
-    "app/server/packages/*",
-    "app/server/services/*"
+    "app/packages/*",
+    "app/services/*"
   ],
   "scripts": {
     "postinstall": "husky install",
@@ -77,5 +76,8 @@
     "**/*.{ts,tsx,scss,json,yaml,yml,md}": [
       "prettier --write"
     ]
+  },
+  "engines": {
+    "node": ">=12"
   }
 }
