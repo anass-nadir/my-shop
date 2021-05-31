@@ -10,7 +10,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/anassNadir/my-shop.git",
+    "url": "https://github.com/anass-nadir/my-shop.git",
     "directory": "app/services/payment"
   },
   "scripts": {
@@ -19,7 +19,7 @@
     "build": "tsc -b ./tsconfig.build.json",
     "start": "NODE_ENV=production node build",
     "test": "echo \"Error: run tests from root\" && exit 1",
-    "clean": "rm -rf ./build && rm -f tsconfig.*.tsbuildinfo"
+    "clean": "rm -rf ./build"
   },
   "dependencies": {
     "@anass-nadir/my-shop-common": "0.2.1-alpha.0",

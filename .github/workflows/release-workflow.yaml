@@ -22,8 +22,10 @@ jobs:
           git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      - name: Set .npmrc
-        run: echo "scripts-prepend-node-path=true" > .npmrc
+      - name: Symlink cli
+        run: |
+          mkdir app/packages/cli/build
+          touch app/packages/cli/build/index.js
       - name: Install dependencies
         run: yarn --immutable
       - name: Build packages

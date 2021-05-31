@@ -15,7 +15,7 @@ See [Conventional Commits](https://conventionalcommits.org) for commit guideline
 
 ### Performance Improvements
 
-- created a cli with code improvments ([0c88aa2](https://github.com/anass-nadir/my-shop/commit/0c88aa2f24bf45aba2a8d6d1c81df874bf1b499d))
+- created a cli with code improvements ([0c88aa2](https://github.com/anass-nadir/my-shop/commit/0c88aa2f24bf45aba2a8d6d1c81df874bf1b499d))
 
 ## [0.2.0-alpha.0](https://github.com/anass-nadir/my-shop/compare/@anass-nadir/my-shop-common@0.1.0-alpha.0...@anass-nadir/my-shop-common@0.2.0-alpha.0) (2021-04-24)
 

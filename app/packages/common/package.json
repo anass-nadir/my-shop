@@ -12,7 +12,7 @@
   },
   "scripts": {
     "build": "tsc -b ./tsconfig.build.json",
-    "clean": "rm -rf ./build && rm -f tsconfig.*.tsbuildinfo",
+    "clean": "rm -rf ./build",
     "watch": "tsc -b ./tsconfig.build.json --watch --preserveWatchOutput",
     "test": "echo \"Error: run tests from root\" && exit 1",
     "get:version": "node -p 'require(\"./package.json\").version'"
