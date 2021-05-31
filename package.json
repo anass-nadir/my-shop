@@ -24,6 +24,7 @@
     "app/services/*"
   ],
   "scripts": {
+    "preinstall": "mkdir -p app/packages/cli/build && touch app/packages/cli/build/index.js",
     "postinstall": "husky install",
     "postversion": "my-shop-cli build -p",
     "prepare": "yarn build:packages",

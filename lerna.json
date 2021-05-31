@@ -19,7 +19,7 @@
         "**/tsconfig.*",
         "**/*.yaml"
       ],
-      "message": "chore(release): changes released 🎉 [ci skip]"
+      "message": "chore(release): changes released 🎉"
     },
     "run": {
       "npmClient": "yarn"
