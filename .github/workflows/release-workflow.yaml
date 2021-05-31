@@ -1,0 +1,49 @@
+name: Release Workflow
+
+on:
+  push:
+    branches: [master, prerelease]
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/setup-node@v2.1.5
+        with:
+          node-version: 15
+          registry-url: 'https://npm.pkg.github.com'
+      - name: Git bot
+        run: |
+          git config --global user.name 'my-shop[bot]'
+          git config --global user.email 'my-shop[bot]@my-shop.com'
+          git remote set-url origin https://x-access-token:${GITHUB_TOKEN}@github.com/$GITHUB_REPOSITORY
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Symlink cli
+        run: |
+          mkdir app/packages/cli/build
+          touch app/packages/cli/build/index.js
+      - name: Install dependencies
+        run: yarn --immutable
+      - name: Build packages
+        run: yarn build:changed
+      - name: Fetch tags
+        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
+      - name: Login to docker hub
+        run: echo $DOCKERHUB_TOKEN | docker login -u $DOCKERHUB_USERNAME --password-stdin
+        env:
+          DOCKERHUB_TOKEN: ${{ secrets.DOCKERHUB_TOKEN }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+      - name: PreRelease
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: "github.ref == 'refs/heads/prerelease'"
+        run: yarn pre-release
+      - name: Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        if: "github.ref == 'refs/heads/master'"
+        run: yarn release

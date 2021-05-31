@@ -4,16 +4,28 @@
   "private": true,
   "repository": {
     "type": "git",
-    "url": "https://github.com/anassNadir/my-shop.git"
+    "url": "https://github.com/anass-nadir/my-shop.git"
   },
+  "author": "Anass Nadir <anass.nadir@gmail.com>",
+  "keywords": [
+    "javascript",
+    "typescript",
+    "express.js",
+    "react.js",
+    "redux.js",
+    "mongodb",
+    "monorepo",
+    "kubernetes",
+    "microservices",
+    "docker"
+  ],
   "workspaces": [
-    "app/client/",
-    "app/server/packages/*",
-    "app/server/services/*"
+    "app/packages/*",
+    "app/services/*"
   ],
   "scripts": {
     "postinstall": "husky install",
-    "postversion": "./node_modules/.bin/my-shop-cli build -p",
+    "postversion": "my-shop-cli build -p",
     "prepare": "yarn build:packages",
     "commit": "cz",
     "bootstrap": "lerna bootstrap",
@@ -34,22 +46,22 @@
     "release": "lerna version --conventional-graduate --yes",
     "pre-release": "lerna version --conventional-prerelease --yes",
     "prettier-check": "prettier --check '**/*.{ts,scss,json,yaml,yml,md}'",
-    "dev": "./node_modules/.bin/my-shop-cli dev"
+    "dev": "my-shop-cli dev"
   },
   "devDependencies": {
+    "@babel/core": "^7.14.3",
+    "@babel/eslint-parser": "^7.14.4",
     "@commitlint/cli": "^12.0.1",
     "@commitlint/config-conventional": "^12.0.1",
     "@typescript-eslint/eslint-plugin": "^4.18.0",
     "@typescript-eslint/parser": "^4.18.0",
     "@types/jest": "^26.0.21",
     "@types/supertest": "^2.0.10",
-    "babel-eslint": "^10.1.0",
     "commitizen": "^4.2.4",
     "cz-conventional-changelog": "^3.3.0",
     "conventional-changelog-conventionalcommits": "^4.5.0",
     "eslint": "^7.22.0",
     "eslint-config-prettier": "^8.1.0",
-    "eslint-config-react-app": "^6.0.0",
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-flowtype": "^5.7.2",
     "eslint-plugin-react-hooks": "^4.2.0",
@@ -77,5 +89,8 @@
     "**/*.{ts,tsx,scss,json,yaml,yml,md}": [
       "prettier --write"
     ]
+  },
+  "engines": {
+    "node": ">=12"
   }
 }

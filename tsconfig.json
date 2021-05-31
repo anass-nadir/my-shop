@@ -12,7 +12,8 @@
     "isolatedModules": true,
     "sourceMap": true,
     "outDir": "build",
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "resolveJsonModule": true
   },
   "include": ["./app"]
 }
