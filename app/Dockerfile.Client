@@ -12,6 +12,7 @@ RUN yarn install --production --silent
 
 COPY --chown=node:node services/client/public ./public/
 COPY --chown=node:node services/client/src ./src/
+COPY --chown=node:node typings/client ./src/@types
 COPY --chown=node:node tsconfig.Client.json ./tsconfig.json
 RUN GENERATE_SOURCEMAP=false yarn build
 
