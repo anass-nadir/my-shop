@@ -3,6 +3,10 @@
 All notable changes to this project will be documented in this file.
 See [Conventional Commits](https://conventionalcommits.org) for commit guidelines.
 
+### [0.1.2](https://github.com/anass-nadir/my-shop/compare/@my-shop/payment-service@0.1.1...@my-shop/payment-service@0.1.2) (2021-05-31)
+
+**Note:** Version bump only for package @my-shop/payment-service
+
 ### [0.1.2-alpha.1](https://github.com/anass-nadir/my-shop/compare/@my-shop/payment-service@0.1.2-alpha.0...@my-shop/payment-service@0.1.2-alpha.1) (2021-05-31)
 
 **Note:** Version bump only for package @my-shop/payment-service
